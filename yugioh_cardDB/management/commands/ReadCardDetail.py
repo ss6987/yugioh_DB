@@ -1,5 +1,7 @@
 import glob
 from bs4 import BeautifulSoup
+from yugioh_cardDB.management.commands.RegistrationCardData import registrationCard
+from yugioh_cardDB.management.commands.RegistrationCardId import registrationCardId
 
 
 def openFile():
@@ -10,5 +12,10 @@ def openFile():
 
 def readCardDetail(html):
     soup = BeautifulSoup(html, "html.parser")
-    h1 = soup.find("h1")
-    print(h1.text)
+    soup = soup.find("article")
+    try:
+        soup.select_one("div.forbidden_limited").extract()
+    except AttributeError:
+        pass
+    card = registrationCard(soup)
+    registrationCardId(soup,card)
