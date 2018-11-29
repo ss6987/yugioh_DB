@@ -64,9 +64,40 @@ def registrationMonster(card_dict):
     return monster
 
 
-def registrationPendulum(names, divs):
-    print("OK")
+def registrationPendulum(card_dict):
+    pendulum = PendulumMonster(
+        card_name=card_dict["card_name"],
+        phonetic=card_dict["ruby"],
+        english_name=card_dict["english_name"],
+        level=card_dict["レベル"],
+        attribute=checkAttribute(card_dict["属性"]),
+        type=checkType(card_dict["種族"]),
+        attack=card_dict["攻撃力"],
+        defence=card_dict["守備力"],
+        card_effect=card_dict["カードテキスト"],
+        scale=card_dict["ペンデュラムスケール"],
+        pendulum_effect=card_dict["ペンデュラム効果"]
+    )
+    pendulum.save()
+    pendulum = registrationClassification(pendulum, card_dict["その他項目"])
+    return pendulum
 
+
+def registrationLink(card_dict):
+    link = LinkMonster(
+        card_name=card_dict["card_name"],
+        phonetic=card_dict["ruby"],
+        english_name=card_dict["english_name"],
+        level=card_dict["リンク"],
+        attribute=checkAttribute(card_dict["属性"]),
+        type=checkType(card_dict["種族"]),
+        attack=card_dict["攻撃力"],
+        defence=-2,
+        card_effect=card_dict["カードテキスト"],
+    )
+    link.save()
+    link = registrationClassification(link,card_dict["その他項目"])
+    return link
 
 
 def registrationClassification(card, classification):
