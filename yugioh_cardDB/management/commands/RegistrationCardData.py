@@ -1,83 +1,66 @@
 from yugioh_cardDB.models import *
+import re
+
+ITEM_BOX_RE = re.compile("^(item_box$|item_box_text$)")
+MAGIC_OR_TRAP_RE = re.compile("(魔法|罠)")
 
 
 def registrationCard(soup):
     names = readNames(soup)
+    card_dict = {"card_name": names[0], "ruby": names[1], "english_name": names[2]}
     table = soup.find("table", id="details")
-    titles = table.select(".item_box_title")
-    for title in titles:
-        title.extract()
-    divs = table.find_all("div", class_="item_box")
-    text = table.find("div", class_="item_box_text")
-    try:
-        text.find("br").replace_with("\n")
-    except AttributeError:
-        pass
-    if len(divs) == 1:
-        card = registrationMagicOrTrap(names, divs, text)
+    divs = table.find_all("div", class_=ITEM_BOX_RE)
+    for div in divs:
+        item_title = div.select_one(".item_box_title").extract().text.strip()
+        brs = div.find_all("br")
+        for br in brs:
+            br.replace_with("\n")
+        card_dict[item_title] = div.text.strip()
+    if re.search(MAGIC_OR_TRAP_RE, card_dict["その他項目"]):
+        card = registrationMagicOrTrap(card_dict)
     else:
-        monster = registrationMonster(names, divs, text)
-        card = Card.objects.filter(card_name=monster.card_name)[0]
+        if card_dict["攻撃力"] == '?':
+            card_dict["攻撃力"] = -1
+        if card_dict["守備力"] == '?':
+            card_dict["守備力"] = -1
+
+        if "ペンデュラム" in card_dict["その他項目"]:
+            monster = registrationPendulum(card_dict)
+        elif "リンク" in card_dict["その他項目"]:
+            monster = registrationLink(card_dict)
+        else:
+            monster = registrationMonster(card_dict)
+        card = Card.objects.filter(card_name=monster.card_name).first()
     return card
 
 
-def registrationMagicOrTrap(names, divs, text):
-    card_name = names[0]
-    phonetic = names[1]
-    english_name = names[2]
-    classification = divs[0].text.strip()
-    card_effect = text.text.strip()
+def registrationMagicOrTrap(card_dict):
     card = Card(
-        card_name=card_name,
-        phonetic=phonetic,
-        english_name=english_name,
-        card_effect=card_effect
+        card_name=card_dict["card_name"],
+        phonetic=card_dict["ruby"],
+        english_name=card_dict["english_name"],
+        card_effect=card_dict["カードテキスト"]
     )
     card.save()
-    for tmp in checkClassification([classification]):
-        card.classification.add(tmp)
+    card = registrationClassification(card, card_dict["その他項目"])
     card.save()
     return card
 
 
-def registrationMonster(names, divs, text):
-    classification = divs[3].text.strip()
-    if "ペンデュラム" in classification:
-        registrationPendulum(names, divs)
-        return
-    if "リンク" in classification:
-        registrationLink(names, divs)
-        return
-    card_name = names[0]
-    phonetic = names[1]
-    english_name = names[2]
-    attribute = checkAttribute(divs[0].text.strip())
-    level = divs[1].text.strip()
-    type = checkType(divs[2].text.strip())
-    classification = divs[3].text.strip()
-    attack = divs[4].text.strip()
-    if attack == '?':
-        attack = -1
-    defence = divs[5].text.strip()
-    if defence == '?':
-        defence = -1
-    effect = text.text.strip()
+def registrationMonster(card_dict):
     monster = Monster(
-        card_name=card_name,
-        phonetic=phonetic,
-        english_name=english_name,
-        level=level,
-        attribute=attribute,
-        type=type,
-        attack=attack,
-        defence=defence,
-        card_effect=effect
+        card_name=card_dict["card_name"],
+        phonetic=card_dict["ruby"],
+        english_name=card_dict["english_name"],
+        level=card_dict["レベル"],
+        attribute=checkAttribute(card_dict["属性"]),
+        type=checkType(card_dict["種族"]),
+        attack=card_dict["攻撃力"],
+        defence=card_dict["守備力"],
+        card_effect=card_dict["カードテキスト"]
     )
     monster.save()
-    classification = classification.split("／")
-    for tmp in checkClassification(classification):
-        monster.classification.add(tmp)
-    monster.save()
+    monster = registrationClassification(monster, card_dict["その他項目"])
     return monster
 
 
@@ -85,8 +68,13 @@ def registrationPendulum(names, divs):
     print("OK")
 
 
-def registrationLink(names, divs):
-    print("OK")
+
+def registrationClassification(card, classification):
+    classification = classification.split("／")
+    for tmp in checkClassification(classification):
+        card.classification.add(tmp)
+    card.save()
+    return card
 
 
 def checkClassification(classifications):
