@@ -1,8 +1,8 @@
 from yugioh_cardDB.models import *
 import re
 
-ITEM_BOX_RE = re.compile("^(item_box$|item_box_text$)")
-MAGIC_OR_TRAP_RE = re.compile("(魔法|罠)")
+ITEM_BOX_RE = re.compile("^(item_box(_text)*)$")
+LEVEL_OR_LINK_RE = re.compile("(レベル|リンク)")
 
 
 def registrationCard(soup):
@@ -16,14 +16,15 @@ def registrationCard(soup):
         for br in brs:
             br.replace_with("\n")
         card_dict[item_title] = div.text.strip()
-    if re.search(MAGIC_OR_TRAP_RE, card_dict["その他項目"]):
+    if "効果" in card_dict:
         card = registrationMagicOrTrap(card_dict)
     else:
         if card_dict["攻撃力"] == '?':
             card_dict["攻撃力"] = -1
         if card_dict["守備力"] == '?':
             card_dict["守備力"] = -1
-
+        if "ランク" in card_dict:
+            card_dict["レベル"] = card_dict["ランク"]
         if "ペンデュラム" in card_dict["その他項目"]:
             monster = registrationPendulum(card_dict)
         elif "リンク" in card_dict["その他項目"]:
@@ -42,7 +43,7 @@ def registrationMagicOrTrap(card_dict):
         card_effect=card_dict["カードテキスト"]
     )
     card.save()
-    card = registrationClassification(card, card_dict["その他項目"])
+    card = registrationClassification(card, card_dict["効果"])
     card.save()
     return card
 
@@ -96,7 +97,7 @@ def registrationLink(card_dict):
         card_effect=card_dict["カードテキスト"],
     )
     link.save()
-    link = registrationClassification(link,card_dict["その他項目"])
+    link = registrationClassification(link, card_dict["その他項目"])
     return link
 
 
