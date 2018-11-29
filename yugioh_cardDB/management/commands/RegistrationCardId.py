@@ -8,7 +8,7 @@ def registrationCardId(soup, card):
         rarity_td = tr.find_all("td")[3]
         rarity = checkRarity(rarity_td)
         card_id_string = tr.find_all("td")[1].text
-        if not card_id_string:
+        if not card_id_string.strip():
             continue
         if not CardId.objects.filter(card_id=card_id_string).exists():
             card_id = CardId(
