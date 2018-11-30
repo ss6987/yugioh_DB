@@ -20,7 +20,7 @@ def getCardHTML():
         if current_url == driver.current_url:
             break
         current_url = driver.current_url
-        sleep(2)
+        print(name)
     driver.close()
 
 
