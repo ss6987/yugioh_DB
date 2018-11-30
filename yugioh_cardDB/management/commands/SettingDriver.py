@@ -4,7 +4,7 @@ from selenium.webdriver.chrome.options import Options
 
 def settingDriver():
     options = Options()
-    # options.add_argument("headless")
+    options.add_argument("headless")
     driver = webdriver.Chrome(executable_path="yugioh_cardDB/management/commands/chromedriver.exe",
                               chrome_options=options)
     driver.implicitly_wait(10)
