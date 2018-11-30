@@ -1,11 +1,12 @@
-from .SettingDriver import settingDriver
-from .GetCardDetailURL import getCardDetailURL,checkDataExist
+from .SettingDriver import settingDriver,executeSearch
+from .GetCardDetailURL import getCardDetailURL, checkDataExist
 import os
 from time import sleep
 
 
 def getCardHTML():
     driver = settingDriver()
+    executeSearch(driver)
     fileExist()
     current_url = driver.current_url
     while True:
@@ -29,5 +30,7 @@ def fileExist():
     if not os.path.isfile("yugioh_cardDB/texts/search_result/search_result.txt"):
         file = open("yugioh_cardDB/texts/search_result/search_result.txt", "w", encoding="utf-8")
         file.close()
+
+
 
 

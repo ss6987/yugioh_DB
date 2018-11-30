@@ -5,9 +5,16 @@ from yugioh_cardDB.management.commands.RegistrationCardId import registrationCar
 
 
 def openFile():
+    # file = open("yugioh_cardDB/texts/card_detail_html/14122.txt","r",encoding="utf-8")
+    # text = file.read()
+    # file.close()
+    # readCardDetail(text)
     files = glob.glob("yugioh_cardDB/texts/card_detail_html/*")
     for file in files:
-        readCardDetail(open(file, "r", encoding="utf-8").read())
+        tmp_file = open(file, "r", encoding="utf-8")
+        text = tmp_file.read()
+        tmp_file.close()
+        readCardDetail(text)
 
 
 def readCardDetail(html):
@@ -18,4 +25,5 @@ def readCardDetail(html):
     except AttributeError:
         pass
     card = registrationCard(soup)
-    registrationCardId(soup,card)
+    registrationCardId(soup, card)
+    print(card.card_name)
