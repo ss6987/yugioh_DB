@@ -21,7 +21,7 @@ def returnSearchPage(driver):
 
 
 def executeSearch(driver):
-    driver.execute_script('jacascript:Search();')
+    driver.execute_script('javascript:Search();')
     dk_container_mode = driver.find_element_by_id("dk_container_mode")
     dk_container_mode.click()
     dk_container_mode.find_elements_by_tag_name("li")[-1].click()
