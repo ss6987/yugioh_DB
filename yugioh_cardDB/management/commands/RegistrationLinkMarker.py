@@ -38,7 +38,6 @@ def registrationLinkMarker():
                 max_page = int(int(max_page_text.replace(",", "")) / 100) + 1
             else:
                 sleep(1)
-            print(str(page) + "/" + str(max_page))
             page += 1
             fields["page"] = str(page)
         fields["page"] = "1"
