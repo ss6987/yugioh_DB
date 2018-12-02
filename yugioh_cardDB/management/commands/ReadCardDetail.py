@@ -2,6 +2,7 @@ import glob
 from bs4 import BeautifulSoup
 from yugioh_cardDB.management.commands.RegistrationCardData import registrationCard
 from yugioh_cardDB.management.commands.RegistrationCardId import registrationCardId
+from tqdm import tqdm
 
 
 def openFile():
@@ -10,7 +11,8 @@ def openFile():
     # file.close()
     # readCardDetail(text)
     files = glob.glob("yugioh_cardDB/texts/card_detail_html/*")
-    for file in files:
+
+    for file in tqdm(files,position=0):
         tmp_file = open(file, "r", encoding="utf-8")
         text = tmp_file.read()
         tmp_file.close()
@@ -26,4 +28,4 @@ def readCardDetail(html):
         pass
     card = registrationCard(soup)
     registrationCardId(soup, card)
-    print(card.card_name)
+
