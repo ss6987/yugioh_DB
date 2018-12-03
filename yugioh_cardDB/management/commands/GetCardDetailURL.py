@@ -1,14 +1,14 @@
-def getCardDetailURL(driver):
-    tr_list = driver.find_elements_by_css_selector("tr.row")
+def getCardDetailURL(soup,bar):
+    tr_list = soup.select("tr.row")
     for tr in tr_list:
-        td = tr.find_elements_by_tag_name("td")[1]
-        name = td.text.replace(",", "&44;")
+        td = tr.find_all("td")[1]
+        name = td.b.string.replace(",", "&44;")
         if not checkDataExist(name):
-            url = td.find_element_by_tag_name("input").get_attribute("value")
+            url = td.select_one("input.link_value").attrs["value"]
             file = open("yugioh_cardDB/texts/search_result/search_result.txt", "a", encoding="utf-8")
             file.write(name + "," + url + "\n")
             file.close()
-            print(name)
+        bar.update(1)
 
 
 def checkDataExist(name):
