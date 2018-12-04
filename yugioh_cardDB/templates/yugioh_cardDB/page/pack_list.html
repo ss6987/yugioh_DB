@@ -1,0 +1,20 @@
+{% extends '../src/base.html' %}
+{% block title %}
+    <title>全パックリスト</title>
+{% endblock %}
+{% block main %}
+    {% for classification in pack_classification %}
+        <h2>{{ classification.pack_classification }}</h2>
+        <table>
+            <tr>
+                <th>パック名</th>
+            </tr>
+
+            {% for pack in classification.packs.all %}
+                <tr>
+                    <td><a href="{% url "pack_detail" pack.pack_name %}">{{ pack.pack_name }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+{% endblock %}

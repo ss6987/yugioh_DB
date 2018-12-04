@@ -1,0 +1,22 @@
+{% extends '../src/base.html' %}
+{% block title %}
+    <title>{{ pack.pack_name }}</title>
+{% endblock %}
+{% block main %}
+    <h2>{{ pack.pack_name }}</h2>
+    <table>
+        <tr>
+            <th>カードID</th>
+            <th>カード名</th>
+            <th>カード分類</th>
+        </tr>
+        {% for card_id in pack.recording_card.all %}
+            <tr>
+                <td>{{ card_id.card_id }}</td>
+                <td>{{ card_id.card_name }}</td>
+                <td>{{ card_id.card_name.classification_string }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

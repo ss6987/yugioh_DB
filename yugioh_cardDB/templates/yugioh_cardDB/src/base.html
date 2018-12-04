@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- BootstrapのCSS読み込み -->
+    <link href="{% static "/yugioh_cardDB/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <!-- jQuery読み込み -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- BootstrapのJS読み込み -->
+    <script src="{% static "/yugioh_cardDB/bootstrap/js/bootstrap.min.js" %}"></script>
+    {% block title %}
+        <title>
+            template
+        </title>
+    {% endblock %}
+</head>
+<body>
+<header>
+    <h1>
+        <a href="{% url "index" %}">遊戯王カード検索</a>
+    </h1>
+    <form method="post" action="{% url "index" %}">{% csrf_token %}
+        <input type="text" name="search_text">
+        <select name="name_or_all">
+            <option value="name">名前</option>
+            <option value="all">全て</option>
+        </select>
+        <input type="submit" value="検索">
+    </form>
+</header>
+<div id="main">
+    {% block main %}
+    {% endblock %}
+</div>
+<div id="navi">
+    <h3>メニュー</h3>
+    <ul>
+        <li>
+            <a href="{% url "index" %}">トップページ</a>
+        </li>
+        <li>
+            <a href="{% url "pack_list" %}">全カードリスト</a>
+        </li>
+        <li>
+{#            <a href="{% url "search" %}">詳細カード検索</a>#}
+        </li>
+    </ul>
+</div>
+<footer>
+
+</footer>
+</body>
+</html>
