@@ -13,7 +13,7 @@
         {% for card_id in pack.recording_card.all %}
             <tr>
                 <td>{{ card_id.card_id }}</td>
-                <td>{{ card_id.card_name }}</td>
+                <td><a href="{% url "card_detail" card_id.card_name %}">{{ card_id.card_name }}</a></td>
                 <td>{{ card_id.card_name.classification_string }}</td>
             </tr>
         {% endfor %}

@@ -17,9 +17,22 @@ class Card(models.Model):
             strings.append(str(classification))
         return "/".join(strings)
 
+    def get_monster(self):
+        from yugioh_cardDB.models import Monster, PendulumMonster, LinkMonster
+        classification_string = self.classification_string()
+        if "リンク" in classification_string:
+            return LinkMonster.objects.filter(card_name=self.card_name).first()
+        elif "ペンデュラム" in classification_string:
+            return PendulumMonster.objects.filter(card_name=self.card_name).first()
+        elif not ("魔法" in classification_string or "罠" in classification_string):
+            return Monster.objects.filter(card_name=self.card_name).first()
+        return None
+
 
 class CardClassification(models.Model):
     classification = models.CharField('classification', max_length=20, primary_key=True)
 
     def __str__(self):
         return self.classification
+
+

@@ -56,6 +56,12 @@ class LinkMonster(Monster):
     def __str__(self):
         return self.card_name
 
+    def get_marker_string(self):
+        strings = []
+        for marker in self.marker.all():
+            strings.append(str(marker))
+        return "/".join(strings)
+
 
 class Attribute(models.Model):
     attribute = models.CharField('attribute', max_length=10, primary_key=True)

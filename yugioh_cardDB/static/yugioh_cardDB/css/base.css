@@ -1,0 +1,27 @@
+body{
+    background-color: #EEEEEE;
+}
+
+header{
+    text-align: center;
+    background-color: #DDDDDD;
+}
+header h1{
+    font-size: 30px;
+}
+
+h2.name{
+    text-align: center;
+}
+
+h2.name span{
+    display: block;
+}
+
+h2.name span.ruby{
+    font-size: 12px;
+}
+
+div.menu{
+    background-color: white;
+}

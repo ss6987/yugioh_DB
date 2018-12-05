@@ -11,6 +11,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- BootstrapのJS読み込み -->
     <script src="{% static "/yugioh_cardDB/bootstrap/js/bootstrap.min.js" %}"></script>
+    <link href="{% static "/yugioh_cardDB/css/base.css" %}" rel="stylesheet">
     {% block title %}
         <title>
             template
@@ -18,36 +19,43 @@
     {% endblock %}
 </head>
 <body>
-<header>
-    <h1>
-        <a href="{% url "index" %}">遊戯王カード検索</a>
-    </h1>
-    <form method="post" action="{% url "index" %}">{% csrf_token %}
-        <input type="text" name="search_text">
-        <select name="name_or_all">
-            <option value="name">名前</option>
-            <option value="all">全て</option>
-        </select>
-        <input type="submit" value="検索">
-    </form>
-</header>
-<div id="main">
-    {% block main %}
-    {% endblock %}
-</div>
-<div id="navi">
-    <h3>メニュー</h3>
-    <ul>
-        <li>
-            <a href="{% url "index" %}">トップページ</a>
-        </li>
-        <li>
-            <a href="{% url "pack_list" %}">全カードリスト</a>
-        </li>
-        <li>
-{#            <a href="{% url "search" %}">詳細カード検索</a>#}
-        </li>
-    </ul>
+<div class="container-fluid">
+    <header class="sticky-top">
+        <div class="row">
+            <div class="col-xl-3">
+                <h1>
+                    <a href="{% url "index" %}">遊戯王カード検索</a>
+                </h1>
+            </div>
+            <div class="col-xl-6">
+                <form method="post" action="{% url "index" %}">{% csrf_token %}
+                    <input type="text" name="search_text">
+                    <select name="name_or_all">
+                        <option value="name">名前</option>
+                        <option value="all">全て</option>
+                    </select>
+                    <input type="submit" value="検索">
+                </form>
+            </div>
+        </div>
+        <div class="row menu">
+            <div class="col-sm-4">
+                <a href="{% url "index" %}">Home</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url "pack_list" %}">全カードリスト</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url "search" %}">詳細検索</a>
+            </div>
+        </div>
+    </header>
+    <div class="row">
+        <div id="main" class="col-md-12">
+            {% block main %}
+            {% endblock %}
+        </div>
+    </div>
 </div>
 <footer>
 

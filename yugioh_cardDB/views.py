@@ -1,4 +1,4 @@
-from django.views.generic import TemplateView, FormView, ListView
+from django.views.generic import TemplateView, FormView, ListView, DetailView
 from yugioh_cardDB.forms import SearchForm
 from yugioh_cardDB.models import *
 
@@ -15,14 +15,19 @@ class PackListView(ListView):
     template_name = "yugioh_cardDB/page/pack_list.html"
 
 
-class PackDetailView(ListView):
+class PackDetailView(DetailView):
     model = Pack
-    context_object_name = "pack"
     template_name = "yugioh_cardDB/page/pack_detail.html"
     queryset = Pack.objects.all()
 
-    def get_queryset(self):
-        results = self.model.objects.all()
-        results = results.filter(pack_name=self.kwargs["pack_name"]).first()
-        return results
 
+class CardDetailView(DetailView):
+    model = Card
+    template_name = "yugioh_cardDB/page/card_detail.html"
+    queryset = Card.objects.all()
+
+
+class SearchView(FormView):
+    form_class = SearchForm
+    template_name = "yugioh_cardDB/page/card_search.html"
+    success_url = "yugioh_cardDB/result"
