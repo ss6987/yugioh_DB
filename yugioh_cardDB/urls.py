@@ -19,7 +19,7 @@ from .views import *
 urlpatterns = [
     path(r'', IndexView.as_view(), name="index"),
     path(r'pack_list/', PackListView.as_view(), name="pack_list"),
-    path(r'pack_detail/<str:pk>', PackDetailView.as_view(), name='pack_detail'),
-    path(r'card_detail/<str:pk>', CardDetailView.as_view(), name='card_detail'),
+    path(r'pack_detail/<int:pk>', PackDetailView.as_view(), name='pack_detail'),
+    path(r'card_detail/<int:pk>', CardDetailView.as_view(), name='card_detail'),
     path(r'search/', SearchView.as_view(), name='search'),
 ]

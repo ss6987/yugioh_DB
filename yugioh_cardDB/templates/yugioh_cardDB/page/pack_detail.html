@@ -10,10 +10,10 @@
             <th>カード名</th>
             <th>カード分類</th>
         </tr>
-        {% for card_id in pack.recording_card.all %}
+        {% for card_id in pack.get_recording_cards %}
             <tr>
                 <td>{{ card_id.card_id }}</td>
-                <td><a href="{% url "card_detail" card_id.card_name %}">{{ card_id.card_name }}</a></td>
+                <td><a href="{% url "card_detail" card_id.card_name.id %}">{{ card_id.card_name }}</a></td>
                 <td>{{ card_id.card_name.classification_string }}</td>
             </tr>
         {% endfor %}

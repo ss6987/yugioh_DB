@@ -1,4 +1,4 @@
-from yugioh_cardDB.models import LinkMonster
+from yugioh_cardDB.models import LinkMonster,LinkMarker
 import urllib3
 from bs4 import BeautifulSoup
 from time import sleep
@@ -66,8 +66,9 @@ def saveMarkerData(soup, i):
     for tr in soup.select("tr.row"):
         card_name = tr.find("b").string.strip()
         link_monster = LinkMonster.objects.filter(card_name=card_name).first()
-        if not link_monster.marker.filter(marker=i).exists():
-            link_monster.marker.add(i)
+        marker = LinkMarker.objects.filter(marker=i).first()
+        if marker is not None:
+            link_monster.marker.add(marker)
             link_monster.save()
 
     # for tr in tr_list:
