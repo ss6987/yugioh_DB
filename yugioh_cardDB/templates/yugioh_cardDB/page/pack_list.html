@@ -12,7 +12,7 @@
 
             {% for pack in classification.packs.all %}
                 <tr>
-                    <td><a href="{% url "pack_detail" pack.pack_name %}">{{ pack.pack_name }}</a></td>
+                    <td><a href="{% url "pack_detail" pack.id %}">{{ pack.pack_name }}</a></td>
                 </tr>
             {% endfor %}
         </table>
