@@ -1,4 +1,4 @@
-from yugioh_cardDB.models import CardId, Pack, Rarity
+from yugioh_cardDB.models import CardId, Pack, Rarity, PackOfficialName
 
 
 def registrationCardId(soup, card):
@@ -9,7 +9,7 @@ def registrationCardId(soup, card):
         rarity = checkRarity(rarity_td)
         card_id_string = tr.find_all("td")[1].text
         if not card_id_string.strip():
-            file = open("yugioh_cardDB/texts/error/card_id.txt","a",encoding="utf-8")
+            file = open("yugioh_cardDB/texts/error/card_id.txt", "a", encoding="utf-8")
             file.write(card.card_name + "\n")
             file.close()
             continue
@@ -19,6 +19,7 @@ def registrationCardId(soup, card):
                 card_name=card,
             )
             card_id.save()
+            pass
         else:
             card_id = CardId.objects.filter(card_id=card_id_string).first()
         card_id.rarity.add(rarity)
@@ -34,17 +35,8 @@ def registrationPack(tr):
 
 
 def checkPack(pack_name, tr):
-    if not Pack.objects.filter(pack_name=pack_name).exists():
-        card_id = tr.find_all("td")[1].text
-        pack_id = card_id[:card_id.index("-")]
-        release_date = tr.find_all("td")[0].text
-        pack = Pack(pack_name=pack_name,
-                    pack_id=pack_id,
-                    release_date=release_date)
-        pack.save()
-        return pack
-    else:
-        pack = Pack.objects.filter(pack_name=pack_name).first()
+    official_pack = PackOfficialName.objects.filter(official_name=pack_name).first()
+    pack = official_pack.db_pack
     return pack
 
 

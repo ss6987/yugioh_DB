@@ -6,7 +6,7 @@ from tqdm import tqdm
 
 
 def openFile():
-    # file = open("yugioh_cardDB/texts/card_detail_html/14122.txt","r",encoding="utf-8")
+    # file = open("yugioh_cardDB/texts/card_detail_html/4244.txt","r",encoding="utf-8")
     # text = file.read()
     # file.close()
     # readCardDetail(text)
@@ -17,11 +17,12 @@ def openFile():
         text = tmp_file.read()
         tmp_file.close()
         readCardDetail(text)
+        del tmp_file
+        del text
 
 
 def readCardDetail(html):
     soup = BeautifulSoup(html, "html.parser")
-    soup = soup.find("article")
     try:
         soup.select_one("div.forbidden_limited").extract()
     except AttributeError:
