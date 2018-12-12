@@ -22,10 +22,13 @@ class PackClassification(models.Model):
     def __str__(self):
         return self.pack_classification
 
+    def get_packs(self):
+        return self.packs.all().order_by("release_date").reverse()
+
 
 class PackOfficialName(models.Model):
     official_name = models.CharField('db_pack_name', max_length=255, primary_key=True)
-    official_id = models.CharField('db_pack_id', max_length=10,default="",blank=True,null=True)
+    official_id = models.CharField('db_pack_id', max_length=10, default="", blank=True, null=True)
     db_pack = models.ForeignKey('Pack', on_delete=models.SET_NULL, related_name='official_name', null=True)
 
     def __str__(self):

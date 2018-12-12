@@ -4,17 +4,28 @@
 {% endblock %}
 {% block main %}
     {% for classification in pack_classification %}
-        <h2>{{ classification.pack_classification }}</h2>
-        <table>
-            <tr>
-                <th>パック名</th>
-            </tr>
-
-            {% for pack in classification.packs.all %}
+        <div class="row">
+            <h2>{{ classification.pack_classification }}</h2>
+            <table class="table table-striped table-bordered">
+                <thead>
                 <tr>
-                    <td><a href="{% url "pack_detail" pack.id %}">{{ pack.pack_name }}</a></td>
+                    <th id="pack_name" scope="row" class="col-xs-8 col-sm-8">パック名</th>
+                    <th id="pack_id" scope="row" class="col-xs-4 col-sm-2">略称</th>
+                    <th id="release_date" scope="row" class="d-none d-sm-block">発売日</th>
                 </tr>
-            {% endfor %}
-        </table>
+                </thead>
+
+                <tbody>
+                {% for pack in classification.get_packs %}
+                    <tr>
+                        <td scope="row" class="col-xs-8 col-sm-8"><a href="{% url "pack_detail" pack.id %}">{{ pack.pack_name }}</a></td>
+                        <td scope="row" class="col-xs-4 col-sm-2">{{ pack.pack_id }}</td>
+                        <td scope="row" class="d-none d-sm-block">{{ pack.release_date|date:"Y/m/d" }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
     {% endfor %}
 {% endblock %}
