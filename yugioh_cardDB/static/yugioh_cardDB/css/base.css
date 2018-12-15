@@ -1,5 +1,5 @@
 body{
-    background-color: #EEEEEE;
+    background-color: #eeeeee;
 }
 
 header{
@@ -22,9 +22,6 @@ h2.name span.ruby{
     font-size: 12px;
 }
 
-div.menu{
-    background-color: white;
-}
 .table td,.table th{
     padding: .3em;
 }

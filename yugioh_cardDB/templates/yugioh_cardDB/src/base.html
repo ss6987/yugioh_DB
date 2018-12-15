@@ -27,13 +27,14 @@
                     <a href="{% url "index" %}">遊戯王カード検索</a>
                 </h1>
             </div>
-            <div class="col-xl-6">
-                <form method="post" action="{% url "index" %}">{% csrf_token %}
+            <div class="col-xl-9">
+                <form method="get" action="{% url "search_result" %}">
                     <input type="text" name="search_text">
                     <select name="name_or_all">
-                        <option value="name">名前</option>
+                        <option value="name" selected>名前</option>
                         <option value="all">全て</option>
                     </select>
+                    <input type="hidden" name="page" value="1">
                     <input type="submit" value="検索">
                 </form>
             </div>

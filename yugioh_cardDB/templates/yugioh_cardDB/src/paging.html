@@ -1,0 +1,25 @@
+<ul class="pagination pagination-sm col-sm-12">
+    {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?{{ query_string }}&page={{ page_obj.previous_page_number }}">前へ</a>
+        </li>
+    {% endif %}
+
+    {% for page in page_list %}
+        {% if page == page_obj.number %}
+            <li class="page-item active">
+                <span class="page-link">{{ page }}</span>
+            </li>
+        {% else %}
+            <li class="page-item">
+                <a class="page-link" href="?{{ query_string }}&page={{ page }}">{{ page }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+    {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?{{ query_string }}&page={{ page_obj.next_page_number }}">次へ</a>
+        </li>
+    {% endif %}
+</ul>

@@ -1,15 +1,24 @@
 {% extends '../src/base.html' %}
 {% block title %}
-    <title>{{ pack.pack_name }}</title>
+    <title>検索結果</title>
 {% endblock %}
 {% block main %}
-    <h2>{{ pack.pack_name }}</h2>
-    <table class="table table-striped">
+    <h2>検索結果</h2>
+    <div>
+        <span>件数:{{ page_obj.paginator.count }}件</span>
+        <span>
+            <select onchange="location.href=value;">
+
+            </select>
+        </span>
+    </div>
+    <table class="table table-bordered">
         <tr class="thead-dark">
             <th style="width: 10em;">カード名</th>
-            <th colspan="6">カード詳細</th>
+            <th colspan="6" class="d-none d-md-table-cell">カード詳細</th>
+            <th colspan="4" class="d-sm-table-cell d-md-none">カード詳細</th>
         </tr>
-        {% for card in cards %}
+        {% for card in card_list %}
             <tr>
                 <td class="d-none d-md-table-cell" rowspan="2">
                     <a href="{% url "card_detail" card.id %}">{{ card }}</a>
@@ -30,10 +39,10 @@
                     <td>
                         {{ card.type }}
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         {{ card.attack }}
                     </td>
-                    <td>
+                    <td class="d-none d-md-table-cell">
                         {{ card.get_defence }}
                     </td>
                 {% else %}
@@ -47,5 +56,7 @@
             </tr>
         {% endfor %}
     </table>
-
+    <div class="mx-auto">
+        {% include '../src/paging.html' %}
+    </div>
 {% endblock %}

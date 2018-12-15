@@ -1,6 +1,8 @@
 from django.views.generic import TemplateView, FormView, ListView, DetailView
 from yugioh_cardDB.forms import SearchForm
 from yugioh_cardDB.models import *
+from django.db.models import Q
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 # Create your views here.
 
@@ -58,6 +60,14 @@ class PackDetailView(DetailView):
     template_name = "yugioh_cardDB/page/pack_detail.html"
     queryset = Pack.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cards = []
+        for card_id in context["pack"].get_recording_cards():
+            cards.append(card_id.card_name.get_monster())
+        context["cards"] = cards
+        return context
+
 
 class CardDetailView(DetailView):
     model = Card
@@ -69,3 +79,58 @@ class SearchView(FormView):
     form_class = SearchForm
     template_name = "yugioh_cardDB/page/card_search.html"
     success_url = "yugioh_cardDB/result"
+
+
+class SearchResultView(ListView):
+    model = Card
+    template_name = "yugioh_cardDB/page/search_result.html"
+    queryset = Card.objects.all()
+    paginate_by = 50
+
+    def get_queryset(self):
+        select = self.request.GET["name_or_all"]
+        search_string = self.request.GET["search_text"]
+        if 'name' in select:
+            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string))
+        else:
+            pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
+                "card_name")
+
+            card = Card.objects.filter(
+                Q(card_name__icontains=search_string) |
+                Q(phonetic__icontains=search_string) |
+                Q(english_name__icontains=search_string) |
+                Q(card_effect__icontains=search_string) |
+                Q(card_name__in=pendulum_monster)
+            )
+            return card
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        cards = []
+        for card in context["card_list"]:
+            cards.append(card.get_monster())
+        request = self.request.GET.copy()
+        try:
+            request.pop('page')
+        except KeyError:
+            pass
+
+        context["page_list"] = self.create_page_list(context)
+        context["card_list"] = cards
+        context["query_string"] = request.urlencode()
+        return context
+
+    @staticmethod
+    def create_page_list(context):
+        page_range = context["page_obj"].paginator.page_range
+        current_page = context["page_obj"].number
+        if len(page_range) >= 10:
+            if current_page - 5 >= 0 and current_page + 5 <= page_range.stop:
+                return range(current_page - 4, current_page + 5)
+            elif current_page - 5 < 0:
+                return range(1, 10)
+            else:
+                return range(page_range.stop - 9, page_range.stop)
+        else:
+            return page_range

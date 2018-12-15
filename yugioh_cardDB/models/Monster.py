@@ -41,6 +41,14 @@ class Monster(Card):
     def __str__(self):
         return self.card_name
 
+    def get_defence(self):
+        if self.defence >= 0:
+            return str(self.defence)
+        elif self.defence == -1:
+            return "?"
+        else:
+            return "---"
+
 
 class PendulumMonster(Monster):
     scale = models.IntegerField('scale')
@@ -67,14 +75,14 @@ class Attribute(models.Model):
     attribute = models.CharField('attribute', max_length=10, primary_key=True)
 
     def __str__(self):
-        return self.attribute
+        return self.attribute.replace("属性","")
 
 
 class Type(models.Model):
     type = models.CharField('type', max_length=20, primary_key=True)
 
     def __str__(self):
-        return self.type
+        return self.type.replace("族","")
 
 
 class LinkMarker(models.Model):

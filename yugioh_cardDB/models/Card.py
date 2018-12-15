@@ -26,7 +26,13 @@ class Card(models.Model):
             return PendulumMonster.objects.filter(card_name=self.card_name).first()
         elif not ("魔法" in classification_string or "罠" in classification_string):
             return Monster.objects.filter(card_name=self.card_name).first()
-        return None
+        return self
+
+    def get_type(self):
+        return str(type(self))
+
+    def get_effect(self):
+        return self.card_effect.replace("\n", "<br/>")
 
 
 class CardClassification(models.Model):
