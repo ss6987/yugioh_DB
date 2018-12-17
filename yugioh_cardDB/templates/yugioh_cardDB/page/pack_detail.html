@@ -1,0 +1,51 @@
+{% extends '../src/base.html' %}
+{% block title %}
+    <title>{{ pack.pack_name }}</title>
+{% endblock %}
+{% block main %}
+    <h2>{{ pack.pack_name }}</h2>
+    <table class="table table-striped">
+        <tr class="thead-dark">
+            <th style="width: 10em;">カード名</th>
+            <th colspan="6">カード詳細</th>
+        </tr>
+        {% for card in cards %}
+            <tr>
+                <td class="d-none d-md-table-cell" rowspan="2">
+                    <a href="{% url "card_detail" card.id %}">{{ card }}</a>
+                </td>
+                <td class="d-table-cell d-md-none">
+                    <a href="{% url "card_detail" card.id %}">{{ card }}</a>
+                </td>
+                {% if "Monster" in card.get_type %}
+                    <td>
+                        {{ card.classification_string }}
+                    </td>
+                    <td>
+                        {{ card.level }}
+                    </td>
+                    <td>
+                        {{ card.attribute }}
+                    </td>
+                    <td>
+                        {{ card.type }}
+                    </td>
+                    <td>
+                        {{ card.attack }}
+                    </td>
+                    <td>
+                        {{ card.get_defence }}
+                    </td>
+                {% else %}
+                    <td colspan="6">
+                        {{ card.classification_string }}
+                    </td>
+                {% endif %}
+            </tr>
+            <tr class="d-none d-md-table-row">
+                <td colspan="6">{{ card.card_effect | linebreaksbr }}</td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

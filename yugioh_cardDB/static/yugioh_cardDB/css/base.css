@@ -1,0 +1,35 @@
+body{
+    background-color: #eeeeee;
+}
+
+header{
+    text-align: center;
+    background-color: #DDDDDD;
+}
+header h1{
+    font-size: 30px;
+}
+
+h2.name{
+    text-align: center;
+}
+
+h2.name span{
+    display: block;
+}
+
+h2.name span.ruby{
+    font-size: 12px;
+}
+
+.table td,.table th{
+    padding: .3em;
+}
+
+th#pack_id{
+    width: 4em;
+}
+
+/*.table td, .table th{*/
+    /*padding: .3rem;*/
+/*}*/

@@ -1,0 +1,13 @@
+{% extends '../src/base.html' %}
+{% block title %}
+    <title>カード詳細検索</title>
+{% endblock %}
+
+{% block main %}
+    <h2>カード詳細検索</h2>
+    <form action="" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="検索">
+    </form>
+{% endblock %}

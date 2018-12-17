@@ -1,0 +1,65 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- BootstrapのCSS読み込み -->
+    <link href="{% static "/yugioh_cardDB/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+    <!-- jQuery読み込み -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- BootstrapのJS読み込み -->
+    <script src="{% static "/yugioh_cardDB/bootstrap/js/bootstrap.min.js" %}"></script>
+    <link href="{% static "/yugioh_cardDB/css/base.css" %}" rel="stylesheet">
+    {% block title %}
+        <title>
+            template
+        </title>
+    {% endblock %}
+</head>
+<body>
+<div class="container-fluid">
+    <header class="sticky-top">
+        <div class="row">
+            <div class="col-xl-3">
+                <h1>
+                    <a href="{% url "index" %}">遊戯王カード検索</a>
+                </h1>
+            </div>
+            <div class="col-xl-9">
+                <form method="get" action="{% url "search_result" %}">
+                    <input type="text" name="search_text">
+                    <select name="name_or_all">
+                        <option value="name" selected>名前</option>
+                        <option value="all">全て</option>
+                    </select>
+                    <input type="hidden" name="page" value="1">
+                    <input type="submit" value="検索">
+                </form>
+            </div>
+        </div>
+        <div class="row menu">
+            <div class="col-sm-4">
+                <a href="{% url "index" %}">Home</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url "pack_list" %}">全カードリスト</a>
+            </div>
+            <div class="col-sm-4">
+                <a href="{% url "search" %}">詳細検索</a>
+            </div>
+        </div>
+    </header>
+    <div class="row">
+        <div id="main" class="col-sm-12 col-md-9 mx-auto">
+            {% block main %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
+<footer>
+
+</footer>
+</body>
+</html>

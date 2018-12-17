@@ -8,6 +8,9 @@ LEVEL_OR_LINK_RE = re.compile("(レベル|リンク)")
 def registrationCard(soup):
     names = readNames(soup)
     card_dict = {"card_name": names[0], "ruby": names[1], "english_name": names[2]}
+    card = Card.objects.filter(card_name=card_dict["card_name"]).first()
+    if card is not None:
+        return card
     table = soup.find("table", id="details")
     divs = table.find_all("div", class_=ITEM_BOX_RE)
     for div in divs:
