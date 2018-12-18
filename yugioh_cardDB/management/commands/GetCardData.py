@@ -3,8 +3,6 @@ from yugioh_cardDB.management.commands.GetCardHTML import *
 from yugioh_cardDB.management.commands.GetCardDetail import *
 from yugioh_cardDB.management.commands.ReadCardDetail import *
 from yugioh_cardDB.management.commands.RegistrationLinkMarker import *
-from yugioh_cardDB.management.commands.RegistrationPackClassification import *
-from yugioh_cardDB.management.commands.RegistrationPack import *
 from yugioh_cardDB.models import *
 import urllib3
 from urllib3.exceptions import InsecureRequestWarning

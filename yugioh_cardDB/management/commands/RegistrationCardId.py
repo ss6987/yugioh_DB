@@ -9,10 +9,11 @@ def registrationCardId(soup, card):
         rarity = checkRarity(rarity_td)
         card_id_string = tr.find_all("td")[1].text
         if not card_id_string.strip():
-            file = open("yugioh_cardDB/texts/error/card_id.txt", "a", encoding="utf-8")
-            file.write(card.card_name + "\n")
+            file = open("yugioh_cardDB/texts/card_ids/log.txt","r",encoding="utf-8")
+            texts = file.read().split("\n")
             file.close()
-            continue
+            if "," + card.card_name + "," in texts:
+                print("ok")
         if not CardId.objects.filter(card_id=card_id_string).exists():
             card_id = CardId(
                 card_id=card_id_string,
