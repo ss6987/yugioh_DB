@@ -7,15 +7,16 @@ from yugioh_cardDB.models import *
 import urllib3
 from urllib3.exceptions import InsecureRequestWarning
 
+
 urllib3.disable_warnings(InsecureRequestWarning)
 
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
         # Card.objects.all().delete()
-
-        getCardHTML()
-        print("カード詳細URL取得完了")
+        #
+        # getCardHTML()
+        # print("カード詳細URL取得完了")
         getCardDetail()
         print("カード詳細取得完了")
         openFile()
