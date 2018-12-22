@@ -15,8 +15,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('yugioh_cardDB/', include('yugioh_cardDB.urls')),
+    path(r'<str>', RedirectView.as_view(url='yugioh_cardDB/')),
+    path(r'', RedirectView.as_view(url='yugioh_cardDB/'))
 ]

@@ -1,5 +1,6 @@
 from yugioh_cardDB.models import *
 import re
+from .RegistrationCardId import registrationCardId
 
 ITEM_BOX_RE = re.compile("^(item_box(_text)*)$")
 LEVEL_OR_LINK_RE = re.compile("(レベル|リンク)")
@@ -35,7 +36,7 @@ def registrationCard(soup):
         else:
             monster = registrationMonster(card_dict)
         card = Card.objects.filter(card_name=monster.card_name).first()
-    return card
+    registrationCardId(soup, card)
 
 
 def registrationMagicOrTrap(card_dict):
