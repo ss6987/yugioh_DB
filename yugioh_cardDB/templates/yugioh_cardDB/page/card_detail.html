@@ -27,5 +27,10 @@
                 {% endif %}
             </div>
         </div>
+    <div class="row">
+        {% for card_id in card.card_id.all %}
+            {{ card_id }}
+        {% endfor %}
+    </div>
     </div>
 {% endblock %}

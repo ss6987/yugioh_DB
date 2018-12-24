@@ -20,37 +20,36 @@
 </head>
 <body>
 <div class="container-fluid">
-    <header class="sticky-top">
-        <div class="row">
-            <div class="col-xl-3">
-                <h1>
-                    <a href="{% url "index" %}">遊戯王カード検索</a>
-                </h1>
-            </div>
-            <div class="col-xl-9">
-                <form method="get" action="{% url "search_result" %}">
-                    <input type="text" name="search_text">
-                    <select name="name_or_all">
-                        <option value="name" selected>名前</option>
-                        <option value="all">全て</option>
-                    </select>
-                    <input type="hidden" name="page" value="1">
-                    <input type="submit" value="検索">
-                </form>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url "index" %}">遊戯王カード検索</a>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="ナビゲーションの切替">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <form class="form-inline" action="{% url "search_result" %}" method="get">
+            <input class="form-control mr-sm-2" type="text" name="search_text" placeholder="検索..." aria-label="検索...">
+            <label class="radio-inline my-2 my-sm-0">
+                <input type="radio" name="name_or_all" value="name" checked>名前
+            </label>
+            <label class="radio-inline my-2 my-sm-0">
+                <input type="radio" name="name_or_all" value="all">全て
+            </label>
+            <button type="submit" class="btn btn-outline-success my-2 my-sm-0">検索</button>
+        </form>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "index" %}">ホーム</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "pack_list" %}">カードリスト</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url "search" %}">詳細カード検索</a>
+                </li>
+            </ul>
         </div>
-        <div class="row menu">
-            <div class="col-sm-4">
-                <a href="{% url "index" %}">Home</a>
-            </div>
-            <div class="col-sm-4">
-                <a href="{% url "pack_list" %}">全カードリスト</a>
-            </div>
-            <div class="col-sm-4">
-                <a href="{% url "search" %}">詳細検索</a>
-            </div>
-        </div>
-    </header>
+    </nav>
     <div class="row">
         <div id="main" class="col-sm-12 col-md-9 mx-auto">
             {% block main %}

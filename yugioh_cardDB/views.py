@@ -75,10 +75,8 @@ class CardDetailView(DetailView):
     queryset = Card.objects.all()
 
 
-class SearchView(FormView):
-    form_class = SearchForm
+class SearchView(TemplateView):
     template_name = "yugioh_cardDB/page/card_search.html"
-    success_url = "yugioh_cardDB/result"
 
 
 class SearchResultView(ListView):
@@ -92,7 +90,7 @@ class SearchResultView(ListView):
         search_string = self.request.GET["search_text"]
         if 'name' in select:
             return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string))
-        else:
+        elif "all":
             pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
                 "card_name")
 
@@ -104,6 +102,8 @@ class SearchResultView(ListView):
                 Q(card_name__in=pendulum_monster)
             )
             return card
+        else:
+            return Card.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

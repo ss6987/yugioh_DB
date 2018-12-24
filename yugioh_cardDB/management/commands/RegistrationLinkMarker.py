@@ -31,7 +31,6 @@ def registrationLinkMarker():
                                    fields=fields)
             soup = BeautifulSoup(request.data, "html.parser")
             saveMarkerData(soup, i)
-            del fields["linkbtn" + str(i)]
             if page == 1:
                 page_num_text = soup.select_one("div.page_num_title").find("strong").text
                 max_page_text = page_num_text[page_num_text.index("検索結果 ") + 5:page_num_text.index("件中")]
@@ -40,6 +39,7 @@ def registrationLinkMarker():
                 sleep(1)
             page += 1
             fields["page"] = str(page)
+        del fields["linkbtn" + str(i)]
         fields["page"] = "1"
 
 
