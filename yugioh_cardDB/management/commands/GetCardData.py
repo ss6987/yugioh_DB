@@ -1,6 +1,6 @@
 from django.core.management import BaseCommand
-from yugioh_cardDB.management.commands.GetCardHTML import *
-from yugioh_cardDB.management.commands.RegistrationLinkMarker import *
+from yugioh_cardDB.management.commands.GetData.GetCardHTML import *
+from yugioh_cardDB.management.commands.GetData.RegistrationLinkMarker import *
 import urllib3
 from urllib3.exceptions import InsecureRequestWarning
 import gc
