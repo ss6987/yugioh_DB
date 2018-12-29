@@ -11,7 +11,8 @@ def registrationCard(soup):
     card_dict = {"card_name": names[0], "ruby": names[1], "english_name": names[2]}
     card = Card.objects.filter(card_name=card_dict["card_name"]).first()
     if card is not None:
-        return card
+        registrationCardId(soup, card)
+        return
     table = soup.find("table", id="details")
     divs = table.find_all("div", class_=ITEM_BOX_RE)
     for div in divs:
@@ -37,6 +38,7 @@ def registrationCard(soup):
             monster = registrationMonster(card_dict)
         card = Card.objects.filter(card_name=monster.card_name).first()
     registrationCardId(soup, card)
+    return
 
 
 def registrationMagicOrTrap(card_dict):

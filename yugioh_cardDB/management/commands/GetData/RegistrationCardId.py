@@ -27,7 +27,7 @@ def registrationCardId(soup, card):
             flag = False
             for text in texts:
                 if pack.pack_name + "," + card.card_name + "," in text \
-                        and CardId.objects.filter(card_id=text.replace("\n", "").split(",")[2]).exists():
+                        and not CardId.objects.filter(card_id=text.replace("\n", "").split(",")[2]).exists():
                     card_id = CardId(
                         card_id=text.replace("\n", "").split(",")[2],
                         card_name=card
