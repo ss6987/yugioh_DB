@@ -30,9 +30,9 @@ def getRarity(rarity_string):
         return raritys.filter(rarity="スーパーレア").first()
     elif "ノーマルレア" == rarity_string or "N" == rarity_string or "NR" == rarity_string:
         return raritys.filter(rarity="ノーマル").first()
-    elif "ノーマルパラレル" == rarity_string or "Nパラ" == rarity_string or "パ" == rarity_string or "パラ" == rarity_string:
+    elif "ノーマルパラレル" == rarity_string or "Nパラ" == rarity_string or "パ" == rarity_string or "パラ" == rarity_string or "ノーマルパラレルレア" == rarity_string:
         return raritys.filter(rarity="パラレル").first()
-    elif "ウルトラレアパラレル" == rarity_string or "URパラ" == rarity_string:
+    elif "ウルトラレアパラレル" == rarity_string or "URパラ" == rarity_string or "ウルトラパラレル" == rarity_string:
         return raritys.filter(rarity="パラレルウルトラレア").first()
     elif "エクストラシークレットレアパラレル" == rarity_string:
         return raritys.filter(rarity="パラレルエクストラシークレットレア").first()
