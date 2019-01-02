@@ -1,14 +1,15 @@
 from yugioh_cardDB.models import *
 import re
 from .RegistrationCardId import registrationCardId
+from yugioh_cardDB.management.commands.ReplaceName import replaceName
+
 
 ITEM_BOX_RE = re.compile("^(item_box(_text)*)$")
 LEVEL_OR_LINK_RE = re.compile("(レベル|リンク)")
 
 
 def registrationCard(soup):
-    names = readNames(soup)
-    card_dict = {"card_name": names[0], "ruby": names[1], "english_name": names[2]}
+    card_dict = readNames(soup)
     card = Card.objects.filter(card_name=card_dict["card_name"]).first()
     if card is not None:
         registrationCardId(soup, card)
@@ -46,7 +47,9 @@ def registrationMagicOrTrap(card_dict):
         card_name=card_dict["card_name"],
         phonetic=card_dict["ruby"],
         english_name=card_dict["english_name"],
-        card_effect=card_dict["カードテキスト"]
+        card_effect=card_dict["カードテキスト"],
+        search_name=card_dict["search_name"],
+        search_phonetic=card_dict["search_phonetic"]
     )
     card.save()
     card = registrationClassification(card, card_dict["効果"])
@@ -64,7 +67,9 @@ def registrationMonster(card_dict):
         type=checkType(card_dict["種族"]),
         attack=card_dict["攻撃力"],
         defence=card_dict["守備力"],
-        card_effect=card_dict["カードテキスト"]
+        card_effect=card_dict["カードテキスト"],
+        search_name=card_dict["search_name"],
+        search_phonetic=card_dict["search_phonetic"]
     )
     monster.save()
     monster = registrationClassification(monster, card_dict["その他項目"])
@@ -83,7 +88,9 @@ def registrationPendulum(card_dict):
         defence=card_dict["守備力"],
         card_effect=card_dict["カードテキスト"],
         scale=card_dict["ペンデュラムスケール"],
-        pendulum_effect=card_dict["ペンデュラム効果"]
+        pendulum_effect=card_dict["ペンデュラム効果"],
+        search_name=card_dict["search_name"],
+        search_phonetic=card_dict["search_phonetic"]
     )
     pendulum.save()
     pendulum = registrationClassification(pendulum, card_dict["その他項目"])
@@ -101,6 +108,8 @@ def registrationLink(card_dict):
         attack=card_dict["攻撃力"],
         defence=-2,
         card_effect=card_dict["カードテキスト"],
+        search_name=card_dict["search_name"],
+        search_phonetic=card_dict["search_phonetic"]
     )
     link.save()
     link = registrationClassification(link, card_dict["その他項目"])
@@ -147,10 +156,23 @@ def checkType(type):
 
 def readNames(soup):
     h1 = soup.find("h1")
-    name = h1.find("span", class_="ruby").next_sibling.strip()
-    ruby = h1.find("span", class_="ruby").string
     try:
-        english_name = h1.find("span", class_="").string
-    except AttributeError:
+        ruby = h1.find("span", class_="ruby").extract().text.strip()
+    except (AttributeError, TypeError):
+        ruby = ""
+    try:
+        english_name = h1.find("span", class_="").extract().text.strip()
+    except (AttributeError, TypeError):
         english_name = ""
-    return name, ruby, english_name
+    name = h1.text.strip()
+    search_name = replaceName(name)
+    search_phonetic = replaceName(ruby)
+    card_dict = {"card_name": name,
+                 "ruby": ruby,
+                 "english_name": english_name,
+                 "search_name": search_name,
+                 "search_phonetic": search_phonetic
+                 }
+    if name != search_name:
+        print(name + "\n" + search_name + "\n")
+    return card_dict

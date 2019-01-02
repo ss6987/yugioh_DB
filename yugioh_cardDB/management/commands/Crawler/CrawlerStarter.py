@@ -1,5 +1,5 @@
 from .PriceSearch import *
-from yugioh_cardDB.models.Shop import SearchPage
+from yugioh_cardDB.models.Shop import SearchPage, ShopURL
 import concurrent.futures
 
 

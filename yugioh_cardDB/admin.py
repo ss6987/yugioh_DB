@@ -3,7 +3,7 @@ from .models import *
 
 
 class PackAdmin(admin.ModelAdmin):
-    exclude = ['recording_card',]
+    exclude = ['recording_card', ]
 
 
 admin.site.register(Card)

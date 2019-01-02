@@ -14,4 +14,4 @@ def getCardDetailURL(soup, bar):
         sleep_time = 2 - (time.time() - start)
         if sleep_time > 0:
             time.sleep(sleep_time)
-        bar.update(1)
+        # bar.update(1)
