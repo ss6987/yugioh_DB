@@ -18,7 +18,10 @@ def searchYudoujyou(card, shop):
     while flag:
         start = time.time()
         request = http.request("GET", url)
-        soup = BeautifulSoup(request.data, "html.parser")
+        try:
+            soup = BeautifulSoup(request.data, "html.parser")
+        except TypeError:
+            print()
         item_count = int(re.sub("[^0-9]", "", soup.find("div", class_="list_count").text))
         if item_count == 0:
             sleep_time = 2 - (time.time() - start)
@@ -55,6 +58,7 @@ def readYudoujyou(card, shop, soup):
                 continue
             rarity = getRarity(rarity_string.strip())
             if rarity is None:
-                print()
+                print(rarity_string)
+                continue
             shop_url = registrationShopURL(card, shop, url, rarity)
             registrationPrice(shop_url, shop.page_name, price)
