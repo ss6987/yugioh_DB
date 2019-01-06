@@ -8,12 +8,37 @@ trans_table = str.maketrans({
     "バ": "ハ", "ビ": "ヒ", "ブ": "フ", "ベ": "ヘ", "ボ": "ホ",
     "パ": "ハ", "ピ": "ヒ", "プ": "フ", "ぺ": "ヘ", "ポ": "ホ"
 })
-replace_string = "[^ぁ-んァ-ンa-zA-Z0-9一-龠０-９]+"
+trans_string_table = [
+    ["ヴァ", "バ"],
+    ["ヴィ", "ビ"],
+    ["ヴ", "ブ"],
+    ["ヴェ", "ベ"],
+    ["ヴォ", "ボ"],
+    ["Ⅰ", "I"],
+    ["Ⅱ", "II"],
+    ["Ⅲ", "III"],
+    ["Ⅳ", "IV"],
+    ["Ⅴ", "V"],
+    ["Ⅵ", "VI"],
+    ["Ⅶ", "VII"],
+    ["Ⅷ", "VIII"],
+    ["Ⅸ", "IX"],
+    ["Ⅹ", "X"],
+]
+replace_string = "[^ぁ-んァ-ンa-zA-Z0-9一-龠０-９ΛγΩεαβδΖ]+"
 
 
 def replaceName(string):
     string = hira2kata(z2h(string, digit=True, kana=False))
-    string = string.replace("ヴァ", "バ").replace("ヴィ", "ビ").replace("ヴ", "ブ").replace("ヴェ", "ベ").replace("ヴォ", "ボ")
+    for tmp_string in trans_string_table:
+        string = string.replace(tmp_string[0], tmp_string[1])
     string = string.translate(trans_table)
     string = re.sub(replace_string, "", string)
+    return string
+
+
+def replaceSymbol(string):
+    if "アルカナフォース" in string:
+        return string[string.index("－") + 1:]
+    string = re.sub("[－ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+", "", string)
     return string

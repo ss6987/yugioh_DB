@@ -11,13 +11,16 @@ class SearchPage(models.Model):
 
 
 class ShopURL(models.Model):
-    card_url = models.URLField('card_url', primary_key=True)
+    card_url = models.URLField('card_url')
     card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='shop_url')
-    search_page = models.ForeignKey('SearchPage', on_delete=models.CASCADE, related_name='URL', default="")
-    rarity = models.ForeignKey('Rarity', on_delete=models.SET_NULL, related_name='price', null=True)
+    search_page = models.ForeignKey('SearchPage', on_delete=models.CASCADE, related_name='shop_url', default="")
+    rarity = models.ForeignKey('Rarity', on_delete=models.CASCADE, related_name='shop_url', default="")
 
     def __str__(self):
         return str(self.card_url)
+
+    class Meta:
+        unique_together = (("card_url", "card", "search_page", "rarity"))
 
 
 class Price(models.Model):

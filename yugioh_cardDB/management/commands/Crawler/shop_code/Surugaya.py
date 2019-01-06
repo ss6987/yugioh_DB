@@ -6,6 +6,7 @@ import urllib3
 from bs4 import BeautifulSoup
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
+from ...SleepTime import setStart, sleep2sec
 
 pattern = "(（.*）|【.*】|\(.*\))"
 http = urllib3.PoolManager()
@@ -16,18 +17,15 @@ def searchSurugaya(card, shop):
     url_name = "/search?category=9905&search_word=" + url_name
     flag = True
     while flag:
-        request = http.request('GET',
-                               shop.search_url + url_name)
-        start = time.time()
+        request = http.request('GET', shop.search_url + url_name)
+        setStart()
         soup = BeautifulSoup(request.data, "html.parser")
         readSurugaya(card, shop, soup)
         if len(soup.find_all("li", class_="next")) == 0:
             flag = False
         else:
             url_name = soup.find("li", class_="next").find("a")["href"]
-        sleep_time = 2 - (time.time() - start)
-        if sleep_time > 0:
-            time.sleep(sleep_time)
+        sleep2sec()
 
 
 def readSurugaya(card, shop, soup):
@@ -54,7 +52,7 @@ def readSurugaya(card, shop, soup):
                         rarity_string = condition[rarity_match.start() + 1:rarity_match.end() - 1].strip()
                         rarity = getRarity(rarity_string)
                     if rarity is None:
-                        print()
+                        print(card_name, rarity_string)
                     shop_url = registrationShopURL(card, shop, card_url, rarity)
                     registrationPrice(shop_url, "駿河屋", price)
                 else:
@@ -66,12 +64,10 @@ def readSurugaya(card, shop, soup):
 
 
 def updateSurugaya(shop_url):
-    start = time.time()
+    setStart()
     request = http.request("GET", shop_url.card_url)
     soup = BeautifulSoup(request.data, "html.parser")
-    price = re.sub("[^0-9]","",soup.find("p",id="price").text)
-    registrationPrice(shop_url,"駿河屋",price)
-    sleep_time = 2 - (time.time() - start)
-    if sleep_time > 0:
-        time.sleep(sleep_time)
+    price = re.sub("[^0-9]", "", soup.find("p", id="price").text)
+    registrationPrice(shop_url, "駿河屋", price)
+    sleep2sec()
     return
