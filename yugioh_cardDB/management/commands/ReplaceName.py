@@ -49,4 +49,8 @@ def replaceh2z(string):
 
 
 def replacez2h(string):
-    return z2h(string,kana=False ,ascii=True, digit=True)
+    return z2h(string, kana=False, ascii=True, digit=True).replace("-", "－")
+
+def replacez2hNotDigit(string):
+    return z2h(string, kana=False, ascii=True,digit=False).replace("-", "－")
+

@@ -2,7 +2,7 @@ import urllib
 import urllib3
 from bs4 import BeautifulSoup
 import re
-from ...ReplaceName import replaceName, replaceSymbol, replaceh2z,replacez2h
+from ...ReplaceName import  replaceSymbol, replaceh2z,replacez2h,replacez2hNotDigit
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from yugioh_cardDB.models.Card import Card
@@ -52,7 +52,7 @@ def readTakarazima(card, shop, soup):
                 rarity_string = rarity_string.split(" ")[-1]
             if "　" in rarity_string:
                 rarity_string = rarity_string.split("　")[-1]
-            if replacez2h(rarity_string) in card.card_name or rarity_string == "":
+            if replacez2h(rarity_string) in card.card_name or replacez2hNotDigit(rarity_string) in card.card_name or rarity_string == "":
                 rarity_string = "ノーマル"
             rarity = getRarity(rarity_string)
         if rarity is None:

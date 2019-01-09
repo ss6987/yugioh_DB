@@ -4,7 +4,7 @@ from .UpdatePrice import updatePrice
 from tqdm import tqdm
 import datetime
 
-cards = Card.objects.all().filter(card_name__icontains="").order_by("-card_name")
+cards = Card.objects.all().filter(card_name__icontains="D３").order_by("-card_name")
 today = datetime.date.today()
 
 
