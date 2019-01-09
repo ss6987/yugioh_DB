@@ -1,6 +1,7 @@
 from .shop_code.Surugaya import searchSurugaya
 from .shop_code.Yudoujyou import searchYudoujyou
 from .shop_code.Wakain import searchWakain
+from .shop_code.Takarazima import searchTakarazima
 
 
 def searchCard(card, shop):
@@ -10,3 +11,5 @@ def searchCard(card, shop):
         searchYudoujyou(card, shop)
     elif "若院" in shop.page_name:
         searchWakain(card, shop)
+    elif "宝島" in shop.page_name:
+        searchTakarazima(card, shop)

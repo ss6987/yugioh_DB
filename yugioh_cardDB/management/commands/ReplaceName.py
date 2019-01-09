@@ -1,4 +1,4 @@
-from jaconv import hira2kata, z2h
+from jaconv import hira2kata, z2h, h2z
 import re
 
 trans_table = str.maketrans({
@@ -42,3 +42,11 @@ def replaceSymbol(string):
         return string[string.index("－") + 1:]
     string = re.sub("[－ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+", "", string)
     return string
+
+
+def replaceh2z(string):
+    return h2z(string, ascii=True, digit=True)
+
+
+def replacez2h(string):
+    return z2h(string,kana=False ,ascii=True, digit=True)

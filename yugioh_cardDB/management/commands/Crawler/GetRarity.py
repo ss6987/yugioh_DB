@@ -12,23 +12,23 @@ def getRarity(rarity_string):
         return raritys.filter(rarity="KCウルトラレア").first()
     elif rarity_string in ["KC+R"]:
         return raritys.filter(rarity="KCレア").first()
-    elif rarity_string in ["レリーフ", "レリーフレア", "アルティメトレア", "アルティメット(レリーフ)", "アルティメット", "レリ"]:
+    elif rarity_string in ["レリーフ", "レリーフレア", "アルティメトレア", "アルティメット(レリーフ)", "アルティメット", "レリ", "Ultimate"]:
         return raritys.filter(rarity="アルティメットレア").first()
-    elif rarity_string in ["UR", "ウルトラ", "ウルトラレアカード"]:
+    elif rarity_string in ["UR", "ウルトラ", "ウルトラレアカード", "Ultra"]:
         return raritys.filter(rarity="ウルトラレア").first()
-    elif rarity_string in ["EXシク", "EXシークレットレア", "エクストラシークレット"]:
+    elif rarity_string in ["EXシク", "EXシークレットレア", "エクストラシークレット", "Ex-Secret"]:
         return raritys.filter(rarity="エクストラシークレットレア").first()
-    elif rarity_string in []:
+    elif rarity_string in ["Collectors"]:
         return raritys.filter(rarity="コレクターズレア").first()
     elif rarity_string in ["ゴールドシークレット"]:
         return raritys.filter(rarity="ゴールドシークレットレア").first()
-    elif rarity_string in ["GR", "ゴールトレア", "ゴールドレアカード", "ゴールド"]:
+    elif rarity_string in ["GR", "ゴールトレア", "ゴールドレアカード", "ゴールド", "Gold"]:
         return raritys.filter(rarity="ゴールドレア").first()
-    elif rarity_string in ["ウルトラシークレットレア", "Uシク", "シク", "シークレット"]:
+    elif rarity_string in ["ウルトラシークレットレア", "Uシク", "シク", "シークレット", "Secret"]:
         return raritys.filter(rarity="シークレットレア").first()
-    elif rarity_string in ["SR", "スーパー"]:
+    elif rarity_string in ["SR", "スーパー", "Super"]:
         return raritys.filter(rarity="スーパーレア").first()
-    elif rarity_string in ["ノーマルレア", "N", "NR", "ノーレア"]:
+    elif rarity_string in ["ノーマルレア", "N", "NR", "ノーレア", "ノーマルカード", "N-Rare"]:
         return raritys.filter(rarity="ノーマル").first()
     elif rarity_string in ["ノーマルパラレル", "Nパラ", "パ", "パラ", "ノーマルパラレルレア", "ノーパラ"]:
         return raritys.filter(rarity="パラレル").first()
@@ -44,9 +44,9 @@ def getRarity(rarity_string):
         return raritys.filter(rarity="パラレルホログラフィックレア").first()
     elif rarity_string in []:
         return raritys.filter(rarity="パラレルレア").first()
-    elif rarity_string in ["ホロ", "ホログラフック", "ホログラフックレア","ホログラフィック"]:
+    elif rarity_string in ["ホロ", "ホログラフック", "ホログラフックレア", "ホログラフィック", "Holographic"]:
         return raritys.filter(rarity="ホログラフィックレア").first()
-    elif rarity_string in ["ミレニアムレア", "スペシャルパラレル"]:
+    elif rarity_string in ["ミレニアムレア", "スペシャルパラレル", "Millennium"]:
         return raritys.filter(rarity="ミレニアム").first()
     elif rarity_string in ["ミレニアムウルトラ"]:
         return raritys.filter(rarity="ミレニアムウルトラレア").first()

@@ -7,11 +7,10 @@ from ...ReplaceName import replaceName, replaceSymbol
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from yugioh_cardDB.models.Card import Card
-from ...SleepTime import sleep2sec,setStart
+from ...SleepTime import sleep2sec, setStart
 
 http = urllib3.PoolManager()
 headers = {"User-Agent": "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"}
-cards = Card.objects.all()
 
 
 def searchWakain(card, shop):
@@ -46,16 +45,33 @@ def readWakain(card, shop, soup):
     for li in li_list:
         text = li.find("a").text
         card_name = re.sub("(\(|（).*(\)|）)", "", text).replace("No Photo", "").strip()
+        url = li.find("a")["href"]
         if replaceName(card_name) != card.card_name:
-            continue
-        if len(cards.filter(search_name=replaceName(card_name))) != 1:
-            print(card.card_name, card.search_name, replaceName(card_name))
             continue
         match = re.search("\(.*\)|（.*）", text)
         if match is not None:
             rarity_string = text[match.start() + 1:match.end() - 1]
             if "/" in rarity_string:
-                print("多重")
+                setStart()
+                request = http.request("GET", shop.search_url + url, headers=headers)
+                soup = BeautifulSoup(request.data, "html.parser")
+                table = soup.find("table", id="option_tbl")
+                tr_list = table.find_all("tr")
+                for tr in tr_list:
+                    if tr.find("th", class_="cell_1") is None:
+                        continue
+                    th = tr.find("th", class_="cell_1")
+                    td = tr.find("td", class_="cell_2")
+                    rarity_string = th.text.replace("NEAR-MINT", "").strip()
+                    rarity = getRarity(rarity_string)
+                    if rarity is None:
+                        print("error", card_name, rarity_string)
+                        continue
+                    shop_url = registrationShopURL(card, shop, url, rarity)
+                    match = re.match("[\d,]+円", td.text)
+                    price = re.sub("[^0-9]+", "", td.text[match.start():match.end()])
+                    registrationPrice(shop_url, shop.page_name, price)
+                sleep2sec()
                 continue
         else:
             rarity_string = "ノーマル"
@@ -63,9 +79,22 @@ def readWakain(card, shop, soup):
         if rarity is None:
             print("error", card_name, rarity_string)
             continue
-        url = li.find("a")["href"]
         shop_url = registrationShopURL(card, shop, url, rarity)
         if li.find("span", class_="price") is None:
             continue
         price = re.sub("[^0-9]+", "", li.find("span", class_="price").text)
         registrationPrice(shop_url, shop.page_name, price)
+
+
+def updateWakain(shop_url):
+    setStart()
+    request = http.request("GET", shop_url.search_page.search_url + shop_url.card_url, headers=headers)
+    soup = BeautifulSoup(request.data, "html.parser")
+    tr = soup.find("tr", class_="sales")
+    if tr is not None:
+        price = re.sub("[^\d]+", "", tr.find("td").text)
+    else:
+        price = None
+    registrationPrice(shop_url, "遊道場", price)
+    sleep2sec()
+    return

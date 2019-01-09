@@ -4,12 +4,12 @@ from .UpdatePrice import updatePrice
 from tqdm import tqdm
 import datetime
 
-cards = Card.objects.all().filter().order_by("-card_name")
+cards = Card.objects.all().filter(card_name__icontains="").order_by("-card_name")
 today = datetime.date.today()
 
 
-def priceSearch(shop):
-    for card in tqdm(cards):
+def priceSearch(shop, number):
+    for card in tqdm(cards, position=number):
         if card.shop_url.filter(search_page=shop).exists():
             shop_urls = card.shop_url.filter(search_page=shop).all()
             for shop_url in shop_urls:
