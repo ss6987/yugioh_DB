@@ -9,7 +9,7 @@ today = datetime.date.today()
 
 
 def priceSearch(shop, number):
-    for card in tqdm(cards, position=number,desc=shop.page_name):
+    for card in tqdm(cards, position=number,desc="loop" + str(number)):
         if card.shop_url.filter(search_page=shop).count() != card.card_id.values("rarity").count():
             searchCard(card, shop)
         shop_urls = card.shop_url.filter(search_page=shop).all()
