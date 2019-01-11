@@ -44,15 +44,20 @@ def readOrenoTurn(card, shop, soup):
         card_id = id_text[match.start():match.end()]
         id_list = card.card_id.filter(card_id__icontains=card_id).first()
         if id_list is None:
-            print("error", card.card_name, card_id)
-            continue
-        if id_list.rarity.all().count() == 1:
+            card_name = div_name.text[:div_name.text.index("【")].strip()
+            if replacez2h(card_name) in card.card_name or replacez2hNotDigit(card_name) in card.card_name:
+                rarity_string = re.sub("\w+-\w+-", "", id_text)
+                rarity = getRarity(rarity_string)
+            else:
+                print("name_error",card.card_name,card_name)
+                continue
+        elif id_list.rarity.all().count() == 1:
             rarity = id_list.rarity.first()
         else:
-            rarity_string = re.sub("\w+-\w+-","",id_text)
+            rarity_string = re.sub("\w+-\w+-", "", id_text)
             rarity = getRarity(rarity_string)
         if rarity is None:
-            print("error", card, rarity_string)
+            print("rarity_error", card, rarity_string)
             continue
         url = div_name.find("a")["href"]
         shop_url = registrationShopURL(card, shop, url, rarity)

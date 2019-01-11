@@ -30,7 +30,7 @@ def getRarity(rarity_string):
         return raritys.filter(rarity="スーパーレア").first()
     elif rarity_string in ["ノーマルレア", "N", "NR", "ノーレア", "ノーマルカード", "N-Rare"]:
         return raritys.filter(rarity="ノーマル").first()
-    elif rarity_string in ["ノーマルパラレル", "Nパラ", "パ", "パラ", "ノーマルパラレルレア", "ノーパラ"]:
+    elif rarity_string in ["ノーマルパラレル", "Nパラ", "パ", "パラ", "ノーマルパラレルレア", "ノーパラ","NP"]:
         return raritys.filter(rarity="パラレル").first()
     elif rarity_string in ["ウルトラレアパラレル", "URパラ", "ウルトラパラレル", "ウルトラパラレルレア"]:
         return raritys.filter(rarity="パラレルウルトラレア").first()
