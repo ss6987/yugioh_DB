@@ -2,6 +2,7 @@ from .shop_code.Surugaya import *
 from .shop_code.Yudoujyou import updateYudoujyou
 from .shop_code.Wakain import updateWakain
 from .shop_code.Takarazima import updateTakarazima
+from .shop_code.OrenoTurn import updateOrenoTurn
 
 
 def updatePrice(shop_url):
@@ -13,3 +14,5 @@ def updatePrice(shop_url):
         updateWakain(shop_url)
     if "宝島" in shop_url.search_page.page_name:
         updateTakarazima(shop_url)
+    if "俺のターン" in shop_url.search_page.page_name:
+        updateOrenoTurn(shop_url)

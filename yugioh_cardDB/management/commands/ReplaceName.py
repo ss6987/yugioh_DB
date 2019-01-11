@@ -40,7 +40,7 @@ def replaceName(string):
 def replaceSymbol(string):
     if "アルカナフォース" in string:
         return string[string.index("－") + 1:]
-    string = re.sub("[－ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+", "", string)
+    string = re.sub("[－ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ＇]+", "", string)
     return string
 
 

@@ -49,19 +49,28 @@ def readOrenoTurn(card, shop, soup):
             else:
                 card_name = div_name.text.strip()
             if replacez2h(card_name) in card.card_name or replacez2hNotDigit(card_name) in card.card_name:
-                rarity_string = re.sub("\w+-\w+-", "", id_text)
+                search = re.search("【[\w]+】", div_name.text)
+                if search is not None:
+                    rarity_string = div_name.text[search.start() + 1:search.end() - 1]
+                else:
+                    rarity_string = "ノーマル"
                 rarity = getRarity(rarity_string)
             else:
-                print("name_error", card.card_name, card_name)
+                # print("name_error", card.card_name, card_name)
                 continue
         elif id_list.rarity.all().count() == 1:
             rarity = id_list.rarity.first()
         else:
-            rarity_string = re.sub("\w+-\w+-", "", id_text)
+            search = re.search("【[\w]+】", div_name.text)
+            if search is not None:
+                rarity_string = div_name.text[search.start() + 1:search.end() - 1]
+            else:
+                rarity_string = "ノーマル"
             rarity = getRarity(rarity_string)
         if rarity is None:
             print("rarity_error", card, rarity_string)
             continue
+
         url = div_name.find("a")["href"]
         shop_url = registrationShopURL(card, shop, url, rarity)
         div_price = item.find("div", class_="price")
@@ -72,5 +81,22 @@ def readOrenoTurn(card, shop, soup):
         registrationPrice(shop_url, shop.page_name, price)
 
 
-def updateOrenoTurn(card_url):
+def updateOrenoTurn(shop_url):
+    setStart()
+    request = http.request("GET", shop_url.search_page.search_url + shop_url.card_url, headers=headers)
+    soup = BeautifulSoup(request.data, "html.parser")
+    tr_list = soup.find("table", class_="table").find_all("tr")
+    stock = None
+    price = None
+    for tr in tr_list:
+        if tr.find("td",class_="cell_1") is None:
+            continue
+        if "価格" in tr.find("td",class_="cell_1").text:
+            price = re.sub("[^0-9]", "", tr.find("p", class_="price_detail").text)
+        elif "在庫数" in tr.find("td",class_="cell_1").text:
+            stock = tr.find("td",class_="cell_2").text
+    if "品切中" in stock:
+        price = None
+    registrationPrice(shop_url, "俺のターン", price)
+    sleep2sec()
     return

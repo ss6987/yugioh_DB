@@ -1,4 +1,5 @@
 from yugioh_cardDB.models.Card import Card
+from yugioh_cardDB.models.Shop import ShopURL
 from .SearchCard import searchCard
 from .UpdatePrice import updatePrice
 from tqdm import tqdm
@@ -9,7 +10,8 @@ today = datetime.date.today()
 
 
 def priceSearch(shop, number):
-    for card in tqdm(cards, position=number,desc="loop" + str(number)):
+    ShopURL.objects.all().filter(search_page=shop).delete()
+    for card in tqdm(cards, position=number, desc="loop" + str(number), leave=True):
         if card.shop_url.filter(search_page=shop).count() != card.card_id.values("rarity").count():
             searchCard(card, shop)
         shop_urls = card.shop_url.filter(search_page=shop).all()
@@ -18,3 +20,4 @@ def priceSearch(shop, number):
                 updatePrice(shop_url)
             elif shop_url.price.first().registration_date != today:
                 updatePrice(shop_url)
+            updatePrice(shop_url)
