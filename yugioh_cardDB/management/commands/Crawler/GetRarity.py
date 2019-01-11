@@ -24,7 +24,7 @@ def getRarity(rarity_string):
         return raritys.filter(rarity="ゴールドシークレットレア").first()
     elif rarity_string in ["GR", "ゴールトレア", "ゴールドレアカード", "ゴールド", "Gold"]:
         return raritys.filter(rarity="ゴールドレア").first()
-    elif rarity_string in ["ウルトラシークレットレア", "Uシク", "シク", "シークレット", "Secret"]:
+    elif rarity_string in ["ウルトラシークレットレア", "Uシク", "シク", "シークレット", "Secret","SI"]:
         return raritys.filter(rarity="シークレットレア").first()
     elif rarity_string in ["SR", "スーパー", "Super"]:
         return raritys.filter(rarity="スーパーレア").first()
