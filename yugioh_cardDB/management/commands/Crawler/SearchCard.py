@@ -2,6 +2,7 @@ from .shop_code.Surugaya import searchSurugaya
 from .shop_code.Yudoujyou import searchYudoujyou
 from .shop_code.Wakain import searchWakain
 from .shop_code.Takarazima import searchTakarazima
+from .shop_code.OrenoTurn import searchOrenoTurn
 
 
 def searchCard(card, shop):
@@ -13,3 +14,5 @@ def searchCard(card, shop):
         searchWakain(card, shop)
     elif "宝島" in shop.page_name:
         searchTakarazima(card, shop)
+    elif "俺のターン" in shop.page_name:
+        searchOrenoTurn(card, shop)
