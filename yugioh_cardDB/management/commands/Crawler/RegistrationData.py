@@ -9,7 +9,10 @@ def registrationShopURL(card, shop, card_url, rarity):
         search_page=shop,
         rarity=rarity
     )
-    shop_url.save()
+    try:
+        shop_url.save()
+    except IntegrityError:
+        return ShopURL.objects.filter(card_url=card_url).first()
     return shop_url
 
 

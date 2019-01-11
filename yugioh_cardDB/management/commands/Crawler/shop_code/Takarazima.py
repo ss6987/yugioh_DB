@@ -2,7 +2,7 @@ import urllib
 import urllib3
 from bs4 import BeautifulSoup
 import re
-from ...ReplaceName import  replaceSymbol, replaceh2z,replacez2h,replacez2hNotDigit
+from ...ReplaceName import replaceSymbol, replaceh2z, replacez2h, replacez2hNotDigit
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from yugioh_cardDB.models.Card import Card
@@ -52,7 +52,8 @@ def readTakarazima(card, shop, soup):
                 rarity_string = rarity_string.split(" ")[-1]
             if "　" in rarity_string:
                 rarity_string = rarity_string.split("　")[-1]
-            if replacez2h(rarity_string) in card.card_name or replacez2hNotDigit(rarity_string) in card.card_name or rarity_string == "":
+            if replacez2h(rarity_string) in card.card_name or replacez2hNotDigit(
+                    rarity_string) in card.card_name or rarity_string == "":
                 rarity_string = "ノーマル"
             rarity = getRarity(rarity_string)
         if rarity is None:
@@ -64,3 +65,17 @@ def readTakarazima(card, shop, soup):
             continue
         price = re.sub("[^0-9]+", "", li.find("span", class_="price").text)
         registrationPrice(shop_url, shop.page_name, price)
+
+
+def updateTakarazima(shop_url):
+    setStart()
+    request = http.request("GET", shop_url.card_url, headers=headers)
+    soup = BeautifulSoup(request.data, "html.parser")
+    span = soup.find("span", id="pricech")
+    if span is not None:
+        price = re.sub("[^\d]+", "", span.text)
+    else:
+        price = None
+    registrationPrice(shop_url, "宝島", price)
+    sleep2sec()
+    return

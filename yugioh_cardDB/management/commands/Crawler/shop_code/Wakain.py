@@ -95,6 +95,6 @@ def updateWakain(shop_url):
         price = re.sub("[^\d]+", "", tr.find("td").text)
     else:
         price = None
-    registrationPrice(shop_url, "遊道場", price)
+    registrationPrice(shop_url, "若院", price)
     sleep2sec()
     return
