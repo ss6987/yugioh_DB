@@ -26,7 +26,7 @@ class ShopURL(models.Model):
 class Price(models.Model):
     shop_url = models.ForeignKey('ShopURL', on_delete=models.CASCADE, related_name='price')
     shop_name = models.CharField('shop_name', max_length=255, default="")
-    price = models.IntegerField('price',null=True)
+    price = models.IntegerField('price', null=True)
     registration_date = models.DateField('registration_date', default=timezone.now)
 
     def __str__(self):

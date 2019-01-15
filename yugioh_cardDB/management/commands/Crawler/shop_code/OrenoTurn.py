@@ -89,13 +89,13 @@ def updateOrenoTurn(shop_url):
     stock = None
     price = None
     for tr in tr_list:
-        if tr.find("td",class_="cell_1") is None:
+        if tr.find("td", class_="cell_1") is None:
             continue
-        if "価格" in tr.find("td",class_="cell_1").text:
+        if "価格" in tr.find("td", class_="cell_1").text:
             price = re.sub("[^0-9]", "", tr.find("p", class_="price_detail").text)
-        elif "在庫数" in tr.find("td",class_="cell_1").text:
-            stock = tr.find("td",class_="cell_2").text
-    if "品切中" in stock:
+        elif "在庫数" in tr.find("td", class_="cell_1").text:
+            stock = tr.find("td", class_="cell_2").text
+    if stock is not None and "品切中" in stock:
         price = None
     registrationPrice(shop_url, "俺のターン", price)
     sleep2sec()
