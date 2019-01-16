@@ -71,7 +71,7 @@ def readOrenoTurn(card, shop, soup):
             print("rarity_error", card, rarity_string)
             continue
 
-        url = div_name.find("a")["href"]
+        url = shop_url.search_page.search_url + div_name.find("a")["href"]
         shop_url = registrationShopURL(card, shop, url, rarity)
         div_price = item.find("div", class_="price")
         if "品切中" in div_price.text:
@@ -83,7 +83,7 @@ def readOrenoTurn(card, shop, soup):
 
 def updateOrenoTurn(shop_url):
     setStart()
-    request = http.request("GET", shop_url.search_page.search_url + shop_url.card_url, headers=headers)
+    request = http.request("GET", shop_url.card_url, headers=headers)
     soup = BeautifulSoup(request.data, "html.parser")
     tr_list = soup.find("table", class_="table").find_all("tr")
     stock = None

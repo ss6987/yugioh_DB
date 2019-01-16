@@ -67,7 +67,10 @@ def updateSurugaya(shop_url):
     setStart()
     request = http.request("GET", shop_url.card_url)
     soup = BeautifulSoup(request.data, "html.parser")
-    price = re.sub("[^0-9]", "", soup.find("p", id="price").text)
+    try:
+        price = re.sub("[^0-9]", "", soup.find("p", id="price").text)
+    except AttributeError:
+        price = None
     registrationPrice(shop_url, "駿河屋", price)
     sleep2sec()
     return

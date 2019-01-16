@@ -45,7 +45,7 @@ def readWakain(card, shop, soup):
     for li in li_list:
         text = li.find("a").text
         card_name = re.sub("(\(|（).*(\)|）)", "", text).replace("No Photo", "").strip()
-        url = li.find("a")["href"]
+        url = shop.search_url + li.find("a")["href"]
         if replaceName(card_name) != card.card_name:
             continue
         match = re.search("\(.*\)|（.*）", text)
@@ -88,7 +88,7 @@ def readWakain(card, shop, soup):
 
 def updateWakain(shop_url):
     setStart()
-    request = http.request("GET", shop_url.search_page.search_url + shop_url.card_url, headers=headers)
+    request = http.request("GET",shop_url.card_url, headers=headers)
     soup = BeautifulSoup(request.data, "html.parser")
     tr = soup.find("tr", class_="sales")
     if tr is not None:
