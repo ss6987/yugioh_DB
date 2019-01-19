@@ -1,15 +1,13 @@
 import urllib
-import urllib3
-from bs4 import BeautifulSoup
 import re
 from ...ReplaceName import replaceSymbol, replaceh2z, replacez2h, replacez2hNotDigit
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from yugioh_cardDB.models.Card import Card
 from ...SleepTime import sleep2sec, setStart
+from ..GetRequest import getSoup
 
-http = urllib3.PoolManager()
-headers = {"User-Agent": "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"}
+
 cards = Card.objects.all()
 
 
@@ -18,9 +16,8 @@ def searchOrenoTurn(card, shop):
     url = shop.search_url + "?mode=srh&cid=1657307%2C0&keyword=" + url_name
     flag = True
     while flag:
+        soup = getSoup(url)
         setStart()
-        request = http.request("GET", url, headers=headers)
-        soup = BeautifulSoup(request.data, "html.parser")
         pagenavi = soup.find("div", class_="pagenavi")
         if pagenavi is None:
             sleep2sec()
@@ -71,7 +68,7 @@ def readOrenoTurn(card, shop, soup):
             print("rarity_error", card, rarity_string)
             continue
 
-        url = shop_url.search_page.search_url + div_name.find("a")["href"]
+        url = shop.search_url + div_name.find("a")["href"]
         shop_url = registrationShopURL(card, shop, url, rarity)
         div_price = item.find("div", class_="price")
         if "品切中" in div_price.text:
@@ -82,9 +79,8 @@ def readOrenoTurn(card, shop, soup):
 
 
 def updateOrenoTurn(shop_url):
+    soup = getSoup(shop_url.card_url)
     setStart()
-    request = http.request("GET", shop_url.card_url, headers=headers)
-    soup = BeautifulSoup(request.data, "html.parser")
     tr_list = soup.find("table", class_="table").find_all("tr")
     stock = None
     price = None

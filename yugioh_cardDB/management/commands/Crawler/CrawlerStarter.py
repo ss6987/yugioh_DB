@@ -4,7 +4,7 @@ import concurrent.futures
 
 
 def crawlerStarter():
-    # ShopURL.objects.all().delete()
+    ShopURL.objects.all().delete()
     shop_all = SearchPage.objects.all()
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
     priceSearch(shop_all.filter(page_name="俺のターン").first(),0)

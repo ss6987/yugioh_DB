@@ -1,15 +1,12 @@
 import urllib
-import urllib3
-from bs4 import BeautifulSoup
 import re
 from ...ReplaceName import replaceSymbol, replaceh2z, replacez2h, replacez2hNotDigit
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from yugioh_cardDB.models.Card import Card
 from ...SleepTime import sleep2sec, setStart
+from ..GetRequest import getSoup
 
-http = urllib3.PoolManager()
-headers = {"User-Agent": "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"}
 cards = Card.objects.all()
 
 
@@ -19,9 +16,8 @@ def searchTakarazima(card, shop):
     url = shop.search_url + "product-list?keyword=" + url_name + "&Submit=" + submit
     flag = True
     while flag:
+        soup = getSoup(url)
         setStart()
-        request = http.request("GET", url, headers=headers)
-        soup = BeautifulSoup(request.data, "html.parser")
         category_item_count = soup.find("div", class_="category_item_count")
         item_count = int(re.sub("[^0-9]", "", category_item_count.find("span", class_="number").text))
         if item_count == 0:
@@ -68,9 +64,8 @@ def readTakarazima(card, shop, soup):
 
 
 def updateTakarazima(shop_url):
+    soup = getSoup(shop_url.card_url)
     setStart()
-    request = http.request("GET", shop_url.card_url, headers=headers)
-    soup = BeautifulSoup(request.data, "html.parser")
     span = soup.find("span", id="pricech")
     if span is not None:
         price = re.sub("[^\d]+", "", span.text)

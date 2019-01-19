@@ -5,7 +5,7 @@ from .UpdatePrice import updatePrice
 from tqdm import tqdm
 import datetime
 
-cards = Card.objects.all().filter().order_by("-card_name")
+cards = Card.objects.all().filter().order_by("card_name")
 today = datetime.date.today()
 
 
@@ -15,8 +15,7 @@ def priceSearch(shop, number):
             searchCard(card, shop)
         shop_urls = card.shop_url.filter(search_page=shop).all()
         for shop_url in shop_urls:
-            # if shop_url.price.first() is None:
-            #     updatePrice(shop_url)
-            # elif shop_url.price.first().registration_date != today:
-            #     updatePrice(shop_url)
-            updatePrice(shop_url)
+            if shop_url.price.first() is None:
+                updatePrice(shop_url)
+            elif shop_url.price.first().registration_date != today:
+                updatePrice(shop_url)

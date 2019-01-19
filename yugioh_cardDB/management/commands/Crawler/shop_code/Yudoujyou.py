@@ -1,14 +1,10 @@
 import urllib
-import urllib3
-import time
-from bs4 import BeautifulSoup
 import re
 from ..RegistrationData import registrationShopURL, registrationPrice
 from ...ReplaceName import replaceName
 from ..GetRarity import getRarity
 from ...SleepTime import setStart, sleep2sec
-
-http = urllib3.PoolManager()
+from ..GetRequest import getSoup
 
 
 def searchYudoujyou(card, shop):
@@ -18,8 +14,7 @@ def searchYudoujyou(card, shop):
     flag = True
     while flag:
         setStart()
-        request = http.request("GET", url)
-        soup = BeautifulSoup(request.data, "html.parser")
+        soup = getSoup(url)
         item_count = int(re.sub("[^0-9]", "", soup.find("div", class_="list_count").text))
         if item_count == 0:
             sleep2sec()
@@ -52,8 +47,7 @@ def readYudoujyou(card, shop, soup):
                 continue
             rarity = getRarity(rarity_string)
             if rarity is None:
-                request = http.request("GET", url)
-                soup = BeautifulSoup(request.data, "html.parser")
+                soup = getSoup(url)
                 div = soup.find("div", class_="detail_desc_box")
                 match = re.search("■.*/.*\r\n", div.text)
                 rarity_string = div.text[match.start():match.end()]
@@ -67,9 +61,8 @@ def readYudoujyou(card, shop, soup):
 
 
 def updateYudoujyou(shop_url):
+    soup = getSoup(shop_url.card_url)
     setStart()
-    request = http.request("GET", shop_url.card_url)
-    soup = BeautifulSoup(request.data, "html.parser")
     price = re.sub("[^0-9]", "", soup.find("span", id="pricech").text)
     registrationPrice(shop_url, "遊道場", price)
     sleep2sec()

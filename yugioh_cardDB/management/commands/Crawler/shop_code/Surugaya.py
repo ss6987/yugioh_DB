@@ -1,15 +1,12 @@
 from ...ReplaceName import replaceName
 import re
-import time
 import urllib
-import urllib3
-from bs4 import BeautifulSoup
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
 from ...SleepTime import setStart, sleep2sec
+from ..GetRequest import getSoup
 
 pattern = "(（.*）|【.*】|\(.*\))"
-http = urllib3.PoolManager()
 
 
 def searchSurugaya(card, shop):
@@ -17,9 +14,8 @@ def searchSurugaya(card, shop):
     url_name = "/search?category=9905&search_word=" + url_name
     flag = True
     while flag:
-        request = http.request('GET', shop.search_url + url_name)
+        soup = getSoup(shop.search_url + url_name)
         setStart()
-        soup = BeautifulSoup(request.data, "html.parser")
         readSurugaya(card, shop, soup)
         if len(soup.find_all("li", class_="next")) == 0:
             flag = False
@@ -64,9 +60,8 @@ def readSurugaya(card, shop, soup):
 
 
 def updateSurugaya(shop_url):
+    soup = getSoup(shop_url.card_url)
     setStart()
-    request = http.request("GET", shop_url.card_url)
-    soup = BeautifulSoup(request.data, "html.parser")
     try:
         price = re.sub("[^0-9]", "", soup.find("p", id="price").text)
     except AttributeError:

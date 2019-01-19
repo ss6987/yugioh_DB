@@ -1,16 +1,11 @@
 import urllib
-import urllib3
-import time
-from bs4 import BeautifulSoup
 import re
 from ...ReplaceName import replaceName, replaceSymbol
 from ..GetRarity import getRarity
 from ..RegistrationData import registrationShopURL, registrationPrice
-from yugioh_cardDB.models.Card import Card
 from ...SleepTime import sleep2sec, setStart
+from ..GetRequest import getSoup
 
-http = urllib3.PoolManager()
-headers = {"User-Agent": "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"}
 
 
 def searchWakain(card, shop):
@@ -19,9 +14,8 @@ def searchWakain(card, shop):
     url = shop.search_url + "?mode=srh&cid=1270248%2C0&keyword=" + url_name
     flag = True
     while flag:
+        soup = getSoup(url)
         setStart()
-        request = http.request("GET", url, headers=headers)
-        soup = BeautifulSoup(request.data, "html.parser")
         contents = soup.find("div", id="inn-box")
         p_list = contents.find_all("p")
         for p in p_list:
@@ -53,8 +47,7 @@ def readWakain(card, shop, soup):
             rarity_string = text[match.start() + 1:match.end() - 1]
             if "/" in rarity_string:
                 setStart()
-                request = http.request("GET", shop.search_url + url, headers=headers)
-                soup = BeautifulSoup(request.data, "html.parser")
+                soup = getSoup(url)
                 table = soup.find("table", id="option_tbl")
                 tr_list = table.find_all("tr")
                 for tr in tr_list:
@@ -88,8 +81,7 @@ def readWakain(card, shop, soup):
 
 def updateWakain(shop_url):
     setStart()
-    request = http.request("GET",shop_url.card_url, headers=headers)
-    soup = BeautifulSoup(request.data, "html.parser")
+    soup = getSoup(shop_url.card_url)
     tr = soup.find("tr", class_="sales")
     if tr is not None:
         price = re.sub("[^\d]+", "", tr.find("td").text)
