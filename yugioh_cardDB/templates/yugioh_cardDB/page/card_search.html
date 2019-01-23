@@ -5,9 +5,45 @@
 
 {% block main %}
     <h2>カード詳細検索</h2>
-    <form action="" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <input type="submit" value="検索">
+    <form action="{% url "search_result" %}" method="get">
+        <div class="form-group">
+            <label class="col-form-label">カード名</label>
+            <div class="row">
+                <input type="text" class="form-control col-8 col-sm-10" name="name_text">
+                <select class="form-control col-4 col-sm-2" name="name_contains">
+                    <option value="inline">を含む</option>
+                    <option value="match">に一致する</option>
+                    <option value="start">で始まる</option>
+                    <option value="end">で終わる</option>
+                    <option value="no_inline">を含まない</option>
+                </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="kana_and_english">
+                <label class="form-check-label">
+                    カナ・英語のカード名もまとめて検索
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="正確">
+                <label class="form-check-label">
+                    あいまい検索を利用しないで正確に検索
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-form-label">カード名カナ</label>
+            <div class="row">
+                <input type="text" class="form-control col-8 col-sm-10" name="kana_text">
+                <select class="form-control col-4 col-sm-2" name="name_contains">
+                    <option value="inline">を含む</option>
+                    <option value="match">に一致する</option>
+                    <option value="start">で始まる</option>
+                    <option value="end">で終わる</option>
+                    <option value="no_inline">を含まない</option>
+                </select>
+            </div>
+        </div>
+
     </form>
 {% endblock %}

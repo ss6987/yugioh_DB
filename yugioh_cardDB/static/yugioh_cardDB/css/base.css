@@ -2,13 +2,6 @@ body{
     background-color: #eeeeee;
 }
 
-header{
-    text-align: center;
-    background-color: #DDDDDD;
-}
-header h1{
-    font-size: 30px;
-}
 
 h2.name{
     text-align: center;
@@ -28,6 +21,10 @@ h2.name span.ruby{
 
 th#pack_id{
     width: 4em;
+}
+label.radio-inline{
+    margin-left: .5em;
+    margin-right: .5em;
 }
 
 /*.table td, .table th{*/

@@ -3,7 +3,11 @@ from .models import *
 
 
 class PackAdmin(admin.ModelAdmin):
-    exclude = ['recording_card',]
+    readonly_fields = ["recording_card"]
+
+
+class ShopURLAdmin(admin.ModelAdmin):
+    readonly_fields = ["card"]
 
 
 admin.site.register(Card)
@@ -18,3 +22,7 @@ admin.site.register(CardId)
 admin.site.register(Pack, PackAdmin)
 admin.site.register(PackClassification)
 admin.site.register(PackOfficialName)
+admin.site.register(SearchPage)
+admin.site.register(ShopURL, ShopURLAdmin)
+admin.site.register(Price)
+admin.site.register(Rarity)

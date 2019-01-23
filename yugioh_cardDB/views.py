@@ -3,6 +3,7 @@ from yugioh_cardDB.forms import SearchForm
 from yugioh_cardDB.models import *
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from datetime import timedelta, date
 
 # Create your views here.
 
@@ -74,11 +75,21 @@ class CardDetailView(DetailView):
     template_name = "yugioh_cardDB/page/card_detail.html"
     queryset = Card.objects.all()
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        card = context["card"]
+        price_date = []
+        shop_urls = card.shop_url.filter(price__registration_date=date.today() - timedelta(days=1)).order_by("rarity")
+        for shop_url in shop_urls:
+            now_price = shop_url.price.filter(registration_date=date.today() - timedelta(days=1)).exclude(price=None).first()
+            if now_price:
+                price_date.append(now_price)
+        context["price_date"] = price_date
+        return context
 
-class SearchView(FormView):
-    form_class = SearchForm
+
+class SearchView(TemplateView):
     template_name = "yugioh_cardDB/page/card_search.html"
-    success_url = "yugioh_cardDB/result"
 
 
 class SearchResultView(ListView):
@@ -92,7 +103,7 @@ class SearchResultView(ListView):
         search_string = self.request.GET["search_text"]
         if 'name' in select:
             return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string))
-        else:
+        elif "all":
             pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
                 "card_name")
 
@@ -104,6 +115,8 @@ class SearchResultView(ListView):
                 Q(card_name__in=pendulum_monster)
             )
             return card
+        else:
+            return Card.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

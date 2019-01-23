@@ -12,7 +12,7 @@
             </select>
         </span>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-nowrap">
         <tr class="thead-dark">
             <th style="width: 10em;">カード名</th>
             <th colspan="6" class="d-none d-md-table-cell">カード詳細</th>
@@ -20,23 +20,23 @@
         </tr>
         {% for card in card_list %}
             <tr>
-                <td class="d-none d-md-table-cell" rowspan="2">
+                <td class="d-none d-md-table-cell" rowspan="2" width="30%">
                     <a href="{% url "card_detail" card.id %}">{{ card }}</a>
                 </td>
-                <td class="d-table-cell d-md-none">
+                <td class="d-table-cell d-md-none" width="50%">
                     <a href="{% url "card_detail" card.id %}">{{ card }}</a>
                 </td>
                 {% if "Monster" in card.get_type %}
                     <td>
                         {{ card.classification_string }}
                     </td>
-                    <td>
+                    <td class="d-none d-sm-table-cell">
                         {{ card.level }}
                     </td>
-                    <td>
+                    <td class="d-none d-sm-table-cell">
                         {{ card.attribute }}
                     </td>
-                    <td>
+                    <td class="d-none d-sm-table-cell">
                         {{ card.type }}
                     </td>
                     <td class="d-none d-md-table-cell">
