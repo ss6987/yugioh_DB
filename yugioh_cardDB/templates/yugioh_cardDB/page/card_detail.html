@@ -16,21 +16,32 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
-            {{ card.classification_string }}
-                {% if "リンク" in card.classification_string %}
-                    {{ card.get_monster.get_marker_string }}
-                {% elif "ペンデュラム" in card.classification_string %}
-                    ペンデュラム
-                {% elif not "魔法" in card.classification_string and not "罠" in card.classification_string %}
-                    モンスター
-                {% endif %}
-            </div>
+            <h3>
+                詳細情報
+            </h3>
         </div>
-    <div class="row">
-        {% for card_id in card.card_id.all %}
-            {{ card_id }}
-        {% endfor %}
-    </div>
+        <div class="row">
+            <h3>
+                価格情報
+            </h3>
+        </div>
+        <div class="row">
+            <table class="table-borderless">
+                <tr>
+                    <th>情報取得日時</th>
+                    <th>レア度</th>
+                    <th>ショップ名</th>
+                    <th>価格</th>
+                </tr>
+                {% for price in price_date %}
+                    <tr>
+                        <td>{{ price.registration_date }}</td>
+                        <td>{{ price.shop_url.rarity }}</td>
+                        <td><a href="{{ price.shop_url.card_url }}">{{ price.shop_name }}</a></td>
+                        <td>{{ price.price }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
     </div>
 {% endblock %}
