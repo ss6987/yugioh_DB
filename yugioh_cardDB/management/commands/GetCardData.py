@@ -11,7 +11,6 @@ urllib3.disable_warnings(InsecureRequestWarning)
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        Card.objects.all().delete()
         getCardHTML()
         print("カード詳細URL取得完了")
         gc.collect()
