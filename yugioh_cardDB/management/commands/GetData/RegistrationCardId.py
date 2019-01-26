@@ -1,7 +1,7 @@
 from yugioh_cardDB.models import CardId, Pack, Rarity, PackOfficialName
 import sys
 
-file = open("yugioh_cardDB/texts/card_ids/log.txt", "r", encoding="utf-8")
+file = open("yugioh_cardDB/texts/card_ids/special_id_list.txt", "r", encoding="utf-8")
 texts = file.readlines()
 file.close()
 
