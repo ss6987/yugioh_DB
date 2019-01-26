@@ -12,4 +12,4 @@ def getCardDetailURL(soup, bar):
         soup = getCardDetail(url)
         registrationCard(soup)
         sleep2sec()
-        # bar.update(1)
+        bar.update(1)

@@ -173,6 +173,4 @@ def readNames(soup):
                  "search_name": search_name,
                  "search_phonetic": search_phonetic
                  }
-    if name != search_name:
-        print(name + "\n" + search_name + "\n")
     return card_dict
