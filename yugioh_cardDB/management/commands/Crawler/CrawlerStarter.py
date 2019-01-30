@@ -7,7 +7,10 @@ def crawlerStarter():
     # ShopURL.objects.all().delete()
     shop_all = SearchPage.objects.all()
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
+    file = open("log.txt","w",encoding="utf-8")
+    file.write("START\n")
     # priceSearch(shop_all.filter(page_name="俺のターン").first(),0)
+    
     results = [
         executor.submit(priceSearch, shop_all.filter(page_name="宝島").first(), 0),
         executor.submit(priceSearch, shop_all.filter(page_name="若院").first(), 1),
@@ -16,7 +19,8 @@ def crawlerStarter():
         executor.submit(priceSearch, shop_all.filter(page_name="俺のターン").first(), 4)
     ]
     for future in concurrent.futures.as_completed(results):
-        print(future.result())
-        print(results.exception())
+        file.write("exception:" + str(future.exception()) + "\n")
+    file.write("END")
+    file.close()
     # for number, shop in enumerate(shop_all):
     #     executor.submit(priceSearch, shop, number)
