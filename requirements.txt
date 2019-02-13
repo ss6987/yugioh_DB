@@ -1,9 +1,0 @@
-beautifulsoup4==4.6.3
-Django==2.1.3
-jaconv==0.2.3
-memory-profiler==0.55.0
-psutil==5.4.8
-pytz==2018.7
-selenium==3.141.0
-tqdm==4.28.1
-urllib3==1.24.1
