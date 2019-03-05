@@ -79,9 +79,10 @@ class CardDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         card = context["card"]
         price_date = []
-        shop_urls = card.shop_url.filter(price__registration_date=date.today() - timedelta(days=1)).order_by("rarity")
+        shop_urls = card.shop_url.all()
+        last_price = shop_urls.order_by("-price__registration_date").first().price.last()
         for shop_url in shop_urls:
-            now_price = shop_url.price.filter(registration_date=date.today() - timedelta(days=1)).exclude(price=None).first()
+            now_price = shop_url.price.filter(registration_date=last_price.registration_date).exclude(price=None).last()
             if now_price:
                 price_date.append(now_price)
         context["price_date"] = price_date

@@ -30,7 +30,7 @@ class Price(models.Model):
     registration_date = models.DateField('registration_date', default=timezone.now)
 
     def __str__(self):
-        return str(self.shop_url) + ',' + str(self.price)
+        return str(self.shop_name) + ',' + str(self.registration_date)
 
     class Meta:
         unique_together = (("shop_url", "shop_name", "registration_date"))

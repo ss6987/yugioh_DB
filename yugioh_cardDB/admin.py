@@ -10,6 +10,10 @@ class ShopURLAdmin(admin.ModelAdmin):
     readonly_fields = ["card"]
 
 
+class PriceAdmin(admin.ModelAdmin):
+    readonly_fields = ["shop_url"]
+
+
 admin.site.register(Card)
 admin.site.register(Monster)
 admin.site.register(PendulumMonster)
@@ -24,5 +28,5 @@ admin.site.register(PackClassification)
 admin.site.register(PackOfficialName)
 admin.site.register(SearchPage)
 admin.site.register(ShopURL, ShopURLAdmin)
-admin.site.register(Price)
+admin.site.register(Price, PriceAdmin)
 admin.site.register(Rarity)
