@@ -78,14 +78,24 @@ class CardDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         card = context["card"]
-        price_date = []
-        shop_urls = card.shop_url.all()
-        last_price = shop_urls.order_by("-price__registration_date").first().price.last()
-        for shop_url in shop_urls:
-            now_price = shop_url.price.filter(registration_date=last_price.registration_date).exclude(price=None).last()
-            if now_price:
-                price_date.append(now_price)
-        context["price_date"] = price_date
+        price_data = []
+        rarity_list = card.card_id.all().order_by('rarity__order_rank').values('rarity').all()
+        for rarity in rarity_list:
+            shop_list = card.shop_url.filter(rarity=rarity['rarity'])
+            if not shop_list:
+                continue
+            last_date = shop_list.order_by('-price__registration_date').first().price.last().registration_date
+            price_list = []
+            for shop in shop_list:
+                tmp_price = shop.price.filter(registration_date=last_date).exclude(price=None).first()
+                if tmp_price is not None:
+                    price_list.append(tmp_price)
+            if not price_list:
+                continue
+            price_list = sorted(price_list, key=lambda p: p.price)
+            rarity['price_list'] = price_list
+            price_data.append(rarity)
+        context["price_data"] = price_data
         return context
 
 
