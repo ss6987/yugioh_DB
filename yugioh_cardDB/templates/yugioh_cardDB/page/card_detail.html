@@ -5,6 +5,7 @@
     </title>
 {% endblock %}
 {% block main %}
+    {% load static %}
     <div class="container">
         <div class="row">
             <div class="mx-auto">
@@ -15,35 +16,41 @@
                 </h2>
             </div>
         </div>
-        <div class="row">
-            <h3>
-                詳細情報
-            </h3>
+        <div class="card_detail">
+            <div class="row">
+                <h3>
+                    カード情報
+                </h3>
+            </div>
+            <div class="raw">
+                {% include '../src/card_detail/card_detail.html' %}
+            </div>
         </div>
-        <div class="row">
-            <h3>
-                価格情報
-            </h3>
+        <div class="card_effect">
+            <div class="row">
+                <h3>効果</h3>
+            </div>
+            <div class="row">
+                {{ card.card_effect | linebreaksbr }}
+            </div>
+            {% if "Pendulum" in classification %}
+                <div class="row">
+                    <h3>P効果</h3>
+                </div>
+                <div class="row">
+                    {{ card.pendulum_effect | linebreaksbr }}
+                </div>
+            {% endif %}
         </div>
-        <div class="row">
-            <table class="table-borderless">
-                <tr>
-                    <th>情報取得日時</th>
-                    <th>レア度</th>
-                    <th>ショップ名</th>
-                    <th>価格</th>
-                </tr>
-                {% for rarity_dict in price_data %}
-                    {% for price in rarity_dict.price_list %}
-                        <tr>
-                            <td>{{ price.registration_date }}</td>
-                            <td>{{ price.shop_url.rarity }}</td>
-                            <td><a href="{{ price.shop_url.card_url }}">{{ price.shop_name }}</a></td>
-                            <td>{{ price.price }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endfor %}
-            </table>
+        <div class="price">
+            <div class="row">
+                <h3>
+                    価格情報
+                </h3>
+            </div>
+            <div class="row">
+                {% include '../src/price_data.html' %}
+            </div>
         </div>
     </div>
 {% endblock %}

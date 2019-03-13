@@ -1,0 +1,18 @@
+<table class="table-borderless">
+    <tr>
+        <th>情報取得日時</th>
+        <th>レア度</th>
+        <th>ショップ名</th>
+        <th>価格</th>
+    </tr>
+    {% for rarity_dict in price_data %}
+        {% for price in rarity_dict.price_list %}
+            <tr>
+                <td>{{ price.registration_date }}</td>
+                <td>{{ price.shop_url.rarity }}</td>
+                <td><a href="{{ price.shop_url.card_url }}">{{ price.shop_name }}</a></td>
+                <td>{{ price.price }}</td>
+            </tr>
+        {% endfor %}
+    {% endfor %}
+</table>

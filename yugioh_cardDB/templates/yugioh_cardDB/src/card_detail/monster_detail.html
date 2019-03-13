@@ -1,0 +1,64 @@
+<tr>
+    <th>
+        {% if "エクシーズ" not in card.classification_string %}
+            レベル
+        {% else %}
+            ランク
+        {% endif %}
+    </th>
+    <td>
+        {{ card.level }}
+    </td>
+</tr>
+<tr>
+    <th>
+        属性
+    </th>
+    <td>
+        {{ card.attribute }}
+    </td>
+</tr>
+<tr>
+    <th>
+        種族
+    </th>
+    <td>
+        {{ card.type }}
+    </td>
+</tr>
+<tr>
+    <th>
+        攻撃力
+    </th>
+    <td>
+        {{ card.get_attack }}
+    </td>
+</tr>
+<tr>
+    <th>
+        守備力
+    </th>
+    <td>
+        {{ card.get_defence }}
+    </td>
+</tr>
+{% if "Pendulum" in classification %}
+    <tr>
+        <th>
+            Pスケール
+        </th>
+        <td>
+            {{ card.scale }}
+        </td>
+    </tr>
+{% endif %}
+{% if "Link" in classification %}
+    <tr>
+        <th>
+            リンク
+        </th>
+        <td>
+            {% include "./link_marker.html" %}
+        </td>
+    </tr>
+{% endif %}

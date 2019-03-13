@@ -4,6 +4,7 @@ from yugioh_cardDB.models import *
 from django.db.models import Q
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from datetime import timedelta, date
+from yugioh_cardDB.management.commands.ReplaceName import replaceName
 
 # Create your views here.
 
@@ -78,24 +79,9 @@ class CardDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         card = context["card"]
-        price_data = []
-        rarity_list = card.card_id.all().order_by('rarity__order_rank').values('rarity').all()
-        for rarity in rarity_list:
-            shop_list = card.shop_url.filter(rarity=rarity['rarity'])
-            if not shop_list:
-                continue
-            last_date = shop_list.order_by('-price__registration_date').first().price.last().registration_date
-            price_list = []
-            for shop in shop_list:
-                tmp_price = shop.price.filter(registration_date=last_date).exclude(price=None).first()
-                if tmp_price is not None:
-                    price_list.append(tmp_price)
-            if not price_list:
-                continue
-            price_list = sorted(price_list, key=lambda p: p.price)
-            rarity['price_list'] = price_list
-            price_data.append(rarity)
-        context["price_data"] = price_data
+        context["card"] = card.get_monster()
+        context["price_data"] = card.get_price_data()
+        context["classification"] = card.get_monster().get_type()
         return context
 
 
@@ -112,8 +98,10 @@ class SearchResultView(ListView):
     def get_queryset(self):
         select = self.request.GET["name_or_all"]
         search_string = self.request.GET["search_text"]
+        replace_search = replaceName(search_string)
         if 'name' in select:
-            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string))
+            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string) |
+                                       Q(search_name__icontains=replace_search) | Q(search_phonetic__icontains=replace_search))
         elif "all":
             pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
                 "card_name")
@@ -121,6 +109,8 @@ class SearchResultView(ListView):
             card = Card.objects.filter(
                 Q(card_name__icontains=search_string) |
                 Q(phonetic__icontains=search_string) |
+                Q(search_name__icontains=replace_search) |
+                Q(search_phonetic__icontains=replace_search) |
                 Q(english_name__icontains=search_string) |
                 Q(card_effect__icontains=search_string) |
                 Q(card_name__in=pendulum_monster)

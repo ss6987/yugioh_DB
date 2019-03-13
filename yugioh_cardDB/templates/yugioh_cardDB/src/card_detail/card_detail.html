@@ -1,0 +1,9 @@
+<table class="card_detail table">
+    <tr>
+        <th>種類</th>
+        <td>{{ card.classification_string }}</td>
+    </tr>
+    {% if "Magic" not in classification and "Trap" not in classification %}
+        {% include "./monster_detail.html" %}
+    {% endif %}
+</table>

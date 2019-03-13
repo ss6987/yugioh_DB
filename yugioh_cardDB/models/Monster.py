@@ -41,6 +41,14 @@ class Monster(Card):
     def __str__(self):
         return self.card_name
 
+    def get_attack(self):
+        if self.attack >= 0:
+            return str(self.attack)
+        elif self.attack == -1:
+            return "?"
+        else:
+            return "---"
+
     def get_defence(self):
         if self.defence >= 0:
             return str(self.defence)
@@ -64,6 +72,19 @@ class LinkMonster(Monster):
     def __str__(self):
         return self.card_name
 
+    def get_marker_picture(self):
+        marker_numbers = []
+        for marker in self.marker.all():
+            if 1 <= marker.marker <= 3:
+                marker_numbers.append(str(marker.marker + 6))
+            elif 7 <= marker.marker <= 9:
+                marker_numbers.append(str(marker.marker - 6))
+            else:
+                marker_numbers.append(str(marker.marker))
+        marker_numbers.sort()
+        string = "".join(marker_numbers)
+        return "circuit" + string + ".png"
+
     def get_marker_string(self):
         strings = []
         for marker in self.marker.all():
@@ -75,14 +96,14 @@ class Attribute(models.Model):
     attribute = models.CharField('attribute', max_length=10, primary_key=True)
 
     def __str__(self):
-        return self.attribute.replace("属性","")
+        return self.attribute.replace("属性", "")
 
 
 class Type(models.Model):
     type = models.CharField('type', max_length=20, primary_key=True)
 
     def __str__(self):
-        return self.type.replace("族","")
+        return self.type.replace("族", "")
 
 
 class LinkMarker(models.Model):
