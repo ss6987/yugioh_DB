@@ -59,13 +59,26 @@ class PackListView(ListView):
 class PackDetailView(DetailView):
     model = Pack
     template_name = "yugioh_cardDB/page/pack_detail.html"
-    queryset = Pack.objects.all()
+    queryset = Pack.objects.prefetch_related("recording_card").all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cards = []
         for card_id in context["pack"].get_recording_cards():
-            cards.append(card_id.card_name.get_monster())
+            strings = []
+            for classification in card_id.card_name.classification.all():
+                strings.append(str(classification))
+            strings = "/".join(strings)
+
+            if "リンク" in strings:
+                card = card_id.card_name.monster.linkmonster
+            elif "ペンデュラム" in strings:
+                card = card_id.card_name.monster.pendulummonster
+            elif not ("魔法" in strings or "罠" in strings):
+                card = card_id.card_name.monster
+            else:
+                card = card_id.card_name
+            cards.append(card)
         context["cards"] = cards
         return context
 
@@ -73,7 +86,7 @@ class PackDetailView(DetailView):
 class CardDetailView(DetailView):
     model = Card
     template_name = "yugioh_cardDB/page/card_detail.html"
-    queryset = Card.objects.all()
+    queryset = Card.objects.prefetch_related().all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,11 +94,12 @@ class CardDetailView(DetailView):
         price_date = []
         shop_urls = card.shop_url.all()
         last_price = shop_urls.order_by("-price__registration_date").first().price.last()
-        for shop_url in shop_urls:
-            now_price = shop_url.price.filter(registration_date=last_price.registration_date).exclude(price=None).last()
-            if now_price:
-                price_date.append(now_price)
-        context["price_date"] = price_date
+        print(last_price)
+        # for shop_url in shop_urls:
+        #     now_price = shop_url.price.filter(registration_date=last_price.registration_date).exclude(price=None).last()
+        #     if now_price:
+        #         price_date.append(now_price)
+        # context["price_date"] = price_date
         return context
 
 

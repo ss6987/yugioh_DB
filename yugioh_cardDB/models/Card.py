@@ -20,14 +20,13 @@ class Card(models.Model):
         return "/".join(strings)
 
     def get_monster(self):
-        from yugioh_cardDB.models import Monster, PendulumMonster, LinkMonster
         classification_string = self.classification_string()
         if "リンク" in classification_string:
-            return LinkMonster.objects.filter(card_name=self.card_name).first()
+            return self.monster.linkmonster
         elif "ペンデュラム" in classification_string:
-            return PendulumMonster.objects.filter(card_name=self.card_name).first()
+            return self.monster.pendulummonster
         elif not ("魔法" in classification_string or "罠" in classification_string):
-            return Monster.objects.filter(card_name=self.card_name).first()
+            return self.monster
         return self
 
     def get_type(self):

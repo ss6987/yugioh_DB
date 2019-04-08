@@ -13,7 +13,7 @@ class Pack(models.Model):
         return self.pack_name
 
     def get_recording_cards(self):
-        return self.recording_card.order_by("card_id")
+        return self.recording_card.order_by("card_id").prefetch_related("card_name")
 
 
 class PackClassification(models.Model):

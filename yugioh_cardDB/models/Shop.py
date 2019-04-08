@@ -15,6 +15,7 @@ class ShopURL(models.Model):
     card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='shop_url')
     search_page = models.ForeignKey('SearchPage', on_delete=models.CASCADE, related_name='shop_url', default="")
     rarity = models.ForeignKey('Rarity', on_delete=models.CASCADE, related_name='shop_url', default="")
+    # now_price = models.IntegerField('now_price')
 
     def __str__(self):
         return str(self.card_url)

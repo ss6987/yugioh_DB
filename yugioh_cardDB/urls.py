@@ -15,6 +15,9 @@ Including another URLconf
 """
 from django.urls import path
 from .views import *
+from django.conf import settings
+from django.conf.urls import include, url
+
 
 urlpatterns = [
     path(r'', IndexView.as_view(), name="index"),
@@ -24,3 +27,10 @@ urlpatterns = [
     path(r'search', SearchView.as_view(), name='search'),
     path(r'search_result', SearchResultView.as_view(), name='search_result'),
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls))
+    ]
