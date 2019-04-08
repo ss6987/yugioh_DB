@@ -117,7 +117,8 @@ class SearchResultView(ListView):
         select = self.request.GET["name_or_all"]
         search_string = self.request.GET["search_text"]
         if 'name' in select:
-            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string))
+            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string) |
+                                       Q(search_name__icontains=replace_search) | Q(search_phonetic__icontains=replace_search))
         elif "all":
             pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
                 "card_name")
@@ -125,6 +126,8 @@ class SearchResultView(ListView):
             card = Card.objects.filter(
                 Q(card_name__icontains=search_string) |
                 Q(phonetic__icontains=search_string) |
+                Q(search_name__icontains=replace_search) |
+                Q(search_phonetic__icontains=replace_search) |
                 Q(english_name__icontains=search_string) |
                 Q(card_effect__icontains=search_string) |
                 Q(card_name__in=pendulum_monster)

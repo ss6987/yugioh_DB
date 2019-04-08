@@ -12,6 +12,7 @@ class CardId(models.Model):
 
 class Rarity(models.Model):
     rarity = models.CharField('rarity', max_length=255, primary_key=True)
+    order_rank = models.IntegerField('order_rank',unique=True, default=0)
 
     def __str__(self):
         return self.rarity

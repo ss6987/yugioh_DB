@@ -30,10 +30,51 @@ class Card(models.Model):
         return self
 
     def get_type(self):
+        classification = self.classification_string()
+        if "魔法" in classification:
+            return "Magic"
+        elif "罠" in classification:
+            return "Trap"
+        elif "リンク" in classification:
+            return "Link"
+        elif "ペンデュラム" in classification:
+            return "Pendulum"
+        elif "儀式" in classification:
+            return "Ritual"
+        elif "融合" in classification:
+            return "Fusion"
+        elif "シンクロ" in classification:
+            return "Synchro"
+        elif "エクシーズ" in classification:
+            return "XYZ"
+        elif "効果" in classification:
+            return "Effect"
+        elif "通常" in classification:
+            return "Normal"
         return str(type(self))
 
     def get_effect(self):
         return self.card_effect.replace("\n", "<br/>")
+
+    def get_price_data(self):
+        price_data = []
+        rarity_list = self.card_id.all().order_by('rarity__order_rank').values('rarity').distinct()
+        for rarity in rarity_list:
+            shop_list = self.shop_url.filter(rarity=rarity['rarity'])
+            if not shop_list:
+                continue
+            last_date = shop_list.order_by('-price__registration_date').first().price.last().registration_date
+            price_list = []
+            for shop in shop_list:
+                tmp_price = shop.price.filter(registration_date=last_date).exclude(price=None).first()
+                if tmp_price is not None:
+                    price_list.append(tmp_price)
+            if not price_list:
+                continue
+            price_list = sorted(price_list, key=lambda p: p.price)
+            rarity['price_list'] = price_list
+            price_data.append(rarity)
+        return price_data
 
 
 class CardClassification(models.Model):
