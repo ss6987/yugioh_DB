@@ -15,7 +15,7 @@ class ShopURL(models.Model):
     card = models.ForeignKey('Card', on_delete=models.CASCADE, related_name='shop_url')
     search_page = models.ForeignKey('SearchPage', on_delete=models.CASCADE, related_name='shop_url', default="")
     rarity = models.ForeignKey('Rarity', on_delete=models.CASCADE, related_name='shop_url', default="")
-    # now_price = models.IntegerField('now_price')
+    now_price = models.IntegerField('now_price', default=0, null=True)
 
     def __str__(self):
         return str(self.card_url)
@@ -24,14 +24,13 @@ class ShopURL(models.Model):
         unique_together = (("card_url", "card", "search_page", "rarity"))
 
 
-class Price(models.Model):
+class PriceLog(models.Model):
     shop_url = models.ForeignKey('ShopURL', on_delete=models.CASCADE, related_name='price')
-    shop_name = models.CharField('shop_name', max_length=255, default="")
-    price = models.IntegerField('price', null=True)
     registration_date = models.DateField('registration_date', default=timezone.now)
+    price = models.IntegerField('price', null=True)
 
     def __str__(self):
-        return str(self.shop_name) + ',' + str(self.registration_date)
+        return str(self.registration_date)
 
     class Meta:
-        unique_together = (("shop_url", "shop_name", "registration_date"))
+        unique_together = (("shop_url", "registration_date"))
