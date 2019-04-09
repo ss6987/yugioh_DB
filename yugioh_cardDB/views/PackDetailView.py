@@ -5,25 +5,20 @@ from yugioh_cardDB.models import Pack
 class PackDetailView(DetailView):
     model = Pack
     template_name = "yugioh_cardDB/page/pack_detail.html"
-    queryset = Pack.objects.prefetch_related("recording_card").all()
+    queryset = Pack.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        pack = context["pack"]
+        recording_cards = pack.recording_card.select_related("card_name").prefetch_related("card_name__classification",
+                                                                                           "card_name__monster",
+                                                                                           "card_name__monster__classification",
+                                                                                           "card_name__monster__linkmonster",
+                                                                                           "card_name__monster__linkmonster__classification",
+                                                                                           "card_name__monster__pendulummonster",
+                                                                                           "card_name__monster__pendulummonster__classification").all()
         cards = []
-        for card_id in context["pack"].get_recording_cards():
-            strings = []
-            for classification in card_id.card_name.classification.all():
-                strings.append(str(classification))
-            strings = "/".join(strings)
-
-            if "リンク" in strings:
-                card = card_id.card_name.monster.linkmonster
-            elif "ペンデュラム" in strings:
-                card = card_id.card_name.monster.pendulummonster
-            elif not ("魔法" in strings or "罠" in strings):
-                card = card_id.card_name.monster
-            else:
-                card = card_id.card_name
-            cards.append(card)
+        for card in recording_cards:
+            cards.append(card.card_name.get_monster())
         context["cards"] = cards
         return context

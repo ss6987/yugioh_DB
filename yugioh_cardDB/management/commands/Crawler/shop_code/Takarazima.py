@@ -60,7 +60,7 @@ def readTakarazima(card, shop, soup):
         if li.find("span", class_="price") is None:
             continue
         price = re.sub("[^0-9]+", "", li.find("span", class_="price").text)
-        registrationPrice(shop_url, shop.page_name, price)
+        registrationPrice(shop_url, price)
 
 
 def updateTakarazima(shop_url):
@@ -71,6 +71,6 @@ def updateTakarazima(shop_url):
         price = re.sub("[^\d]+", "", span.text)
     else:
         price = None
-    registrationPrice(shop_url, "宝島", price)
+    registrationPrice(shop_url, price)
     sleep2sec()
     return

@@ -57,13 +57,13 @@ def readYudoujyou(card, shop, soup):
                 print(card.card_name, rarity_string)
                 continue
             shop_url = registrationShopURL(card, shop, url, rarity)
-            registrationPrice(shop_url, shop.page_name, price)
+            registrationPrice(shop_url,  price)
 
 
 def updateYudoujyou(shop_url):
     soup = getSoup(shop_url.card_url)
     setStart()
     price = re.sub("[^0-9]", "", soup.find("span", id="pricech").text)
-    registrationPrice(shop_url, "遊道場", price)
+    registrationPrice(shop_url, price)
     sleep2sec()
     return

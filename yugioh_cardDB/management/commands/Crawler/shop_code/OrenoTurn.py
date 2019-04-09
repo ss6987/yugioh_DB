@@ -75,7 +75,7 @@ def readOrenoTurn(card, shop, soup):
             price = None
         else:
             price = int(re.sub("[^0-9]+", "", div_price.text))
-        registrationPrice(shop_url, shop.page_name, price)
+        registrationPrice(shop_url, price)
 
 
 def updateOrenoTurn(shop_url):
@@ -93,6 +93,6 @@ def updateOrenoTurn(shop_url):
             stock = tr.find("td", class_="cell_2").text
     if stock is not None and "品切中" in stock:
         price = None
-    registrationPrice(shop_url, "俺のターン", price)
+    registrationPrice(shop_url, price)
     sleep2sec()
     return

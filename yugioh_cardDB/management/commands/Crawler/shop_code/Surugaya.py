@@ -50,7 +50,7 @@ def readSurugaya(card, shop, soup):
                     if rarity is None:
                         print(card_name, rarity_string)
                     shop_url = registrationShopURL(card, shop, card_url, rarity)
-                    registrationPrice(shop_url, "駿河屋", price)
+                    registrationPrice(shop_url, price)
                 else:
                     pass
                     # print(card.card_name + "," + card_name)
@@ -66,6 +66,6 @@ def updateSurugaya(shop_url):
         price = re.sub("[^0-9]", "", soup.find("p", id="price").text)
     except AttributeError:
         price = None
-    registrationPrice(shop_url, "駿河屋", price)
+    registrationPrice(shop_url, price)
     sleep2sec()
     return

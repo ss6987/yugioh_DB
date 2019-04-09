@@ -18,12 +18,13 @@ class Pack(models.Model):
 
 class PackClassification(models.Model):
     pack_classification = models.CharField('pack_classification', max_length=255, primary_key=True)
+    order_rank = models.IntegerField("order_rank",default=0,unique=True)
 
     def __str__(self):
         return self.pack_classification
 
     def get_packs(self):
-        return self.packs.all().order_by("release_date").reverse()
+        return self.packs.all()
 
 
 class PackOfficialName(models.Model):

@@ -5,13 +5,13 @@
         <th>ショップ名</th>
         <th>価格</th>
     </tr>
-    {% for rarity_dict in price_data %}
-        {% for price in rarity_dict.price_list %}
+    {% for price_dict in price_data %}
+        {% for shop_url in price_dict.shop_urls %}
             <tr>
-                <td>{{ price.registration_date }}</td>
-                <td>{{ price.shop_url.rarity }}</td>
-                <td><a href="{{ price.shop_url.card_url }}">{{ price.shop_name }}</a></td>
-                <td>{{ price.price }}</td>
+                <td>{{ shop_url.registration_date }}</td>
+                <td>{{ shop_url.rarity }}</td>
+                <td><a href="{{ shop_url.card_url }}">{{ shop_url.search_page }}</a></td>
+                <td>{{ shop_url.now_price }}</td>
             </tr>
         {% endfor %}
     {% endfor %}

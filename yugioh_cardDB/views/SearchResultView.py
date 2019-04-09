@@ -16,14 +16,30 @@ class SearchResultView(ListView):
         search_string = self.request.GET["search_text"]
         replace_search = replaceName(search_string)
         if 'name' in select:
-            return Card.objects.filter(Q(card_name__icontains=search_string) | Q(phonetic__icontains=search_string) |
-                                       Q(search_name__icontains=replace_search) | Q(
-                search_phonetic__icontains=replace_search))
+            card = Card.objects \
+                .prefetch_related("classification",
+                                  "monster",
+                                  "monster__classification",
+                                  "monster__pendulummonster",
+                                  "monster__pendulummonster__classification",
+                                  "monster__linkmonster",
+                                  "monster__linkmonster__classification") \
+                .filter(Q(card_name__icontains=search_string) |
+                        Q(phonetic__icontains=search_string) |
+                        Q(search_name__icontains=replace_search) |
+                        Q(search_phonetic__icontains=replace_search))
+            return card
         elif "all":
-            pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list(
-                "card_name")
-
-            card = Card.objects.filter(
+            pendulum_monster = PendulumMonster.objects.filter(pendulum_effect__icontains=search_string).values_list("card_name")
+            card = Card.objects \
+                .prefetch_related("classification",
+                                  "monster",
+                                  "monster__classification",
+                                  "monster__pendulummonster",
+                                  "monster__pendulummonster__classification",
+                                  "monster__linkmonster",
+                                  "monster__linkmonster__classification") \
+                .filter(
                 Q(card_name__icontains=search_string) |
                 Q(phonetic__icontains=search_string) |
                 Q(search_name__icontains=replace_search) |
@@ -31,10 +47,17 @@ class SearchResultView(ListView):
                 Q(english_name__icontains=search_string) |
                 Q(card_effect__icontains=search_string) |
                 Q(card_name__in=pendulum_monster)
-            )
+                )
             return card
         else:
-            return Card.objects.all()
+            card = Card.objects.prefetch_related("classification",
+                                                 "monster",
+                                                 "monster__classification",
+                                                 "monster__pendulummonster",
+                                                 "monster__pendulummonster__classification",
+                                                 "monster__linkmonster",
+                                                 "monster__linkmonster__classification").all()
+            return card
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

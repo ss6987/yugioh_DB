@@ -63,7 +63,7 @@ def readWakain(card, shop, soup):
                     shop_url = registrationShopURL(card, shop, url, rarity)
                     match = re.match("[\d,]+円", td.text)
                     price = re.sub("[^0-9]+", "", td.text[match.start():match.end()])
-                    registrationPrice(shop_url, shop.page_name, price)
+                    registrationPrice(shop_url, price)
                 sleep2sec()
                 continue
         else:
@@ -76,7 +76,7 @@ def readWakain(card, shop, soup):
         if li.find("span", class_="price") is None:
             continue
         price = re.sub("[^0-9]+", "", li.find("span", class_="price").text)
-        registrationPrice(shop_url, shop.page_name, price)
+        registrationPrice(shop_url, price)
 
 
 def updateWakain(shop_url):
@@ -87,6 +87,6 @@ def updateWakain(shop_url):
         price = re.sub("[^\d]+", "", tr.find("td").text)
     else:
         price = None
-    registrationPrice(shop_url, "若院", price)
+    registrationPrice(shop_url, price)
     sleep2sec()
     return

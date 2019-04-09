@@ -1,4 +1,4 @@
-from yugioh_cardDB.models.Shop import ShopURL, Price
+from yugioh_cardDB.models.Shop import ShopURL, PriceLog
 from django.db.utils import IntegrityError
 
 
@@ -16,14 +16,15 @@ def registrationShopURL(card, shop, card_url, rarity):
     return shop_url
 
 
-def registrationPrice(shop_url, shop_name, price):
-    price_data = Price(
+def registrationPrice(shop_url, price):
+    price_data = PriceLog(
         shop_url=shop_url,
-        shop_name=shop_name,
         price=price,
     )
     try:
         price_data.save()
+        shop_url.now_price = price
+        shop_url.save()
     except IntegrityError:
         return None
     return price_data

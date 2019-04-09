@@ -20,14 +20,19 @@ class Card(models.Model):
         return "/".join(strings)
 
     def get_monster(self):
-        classification_string = self.classification_string()
-        if "リンク" in classification_string:
-            return self.monster.linkmonster
-        elif "ペンデュラム" in classification_string:
-            return self.monster.pendulummonster
-        elif not ("魔法" in classification_string or "罠" in classification_string):
-            return self.monster
-        return self
+        try:
+            monster = self.monster
+            try:
+                return monster.pendulummonster
+            except Card.DoesNotExist:
+                pass
+            try:
+                return monster.linkmonster
+            except Card.DoesNotExist:
+                pass
+            return monster
+        except Card.DoesNotExist:
+            return self
 
     def get_type(self):
         classification = self.classification_string()
