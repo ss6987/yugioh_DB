@@ -127,12 +127,8 @@ def registrationClassification(card, classification):
 def checkClassification(classifications):
     return_classifications = []
     for classification in classifications:
-        if not CardClassification.objects.filter(classification=classification).exists():
-            tmp_classification = CardClassification(classification=classification)
-            tmp_classification.save()
-            return_classifications.append(tmp_classification)
-        else:
-            return_classifications.append(CardClassification.objects.filter(classification=classification)[0])
+        tmp_classification = CardClassification.objects.get_or_create(classification=classification.strip())[0]
+        return_classifications.append(tmp_classification)
     return return_classifications
 
 

@@ -1,4 +1,4 @@
-from yugioh_cardDB.models import CardId, Pack, Rarity, PackOfficialName
+from yugioh_cardDB.models import CardId, Pack, Rarity,PackSeason,PackClassification
 import sys
 
 file = open("yugioh_cardDB/texts/card_ids/special_id_list.txt", "r", encoding="utf-8")
@@ -15,7 +15,7 @@ def registrationCardId(soup, card):
         rarity = checkRarity(rarity_td)
         card_id_string = td_list[1].text
         if card_id_string.strip() and CardId.objects.filter(card_id=card_id_string).exists():
-            card_id = CardId.objects.filter(card_id=card_id_string).first()
+            card_id = CardId.objects.get(card_id=card_id_string)
         elif card_id_string.strip():
             card_id = CardId(
                 card_id=card_id_string,
@@ -23,10 +23,10 @@ def registrationCardId(soup, card):
             )
             card_id.save()
         else:
-            pack = PackOfficialName.objects.filter(official_name=td_list[2].find("b").text).first().db_pack
+            pack_name = td_list[2].find("b").text.strip()
             flag = False
             for text in texts:
-                if pack.pack_name + "," + card.card_name + "," in text \
+                if pack_name + "," + card.card_name + "," in text \
                         and not CardId.objects.filter(card_id=text.replace("\n", "").split(",")[2]).exists():
                     card_id = CardId(
                         card_id=text.replace("\n", "").split(",")[2],
@@ -43,20 +43,23 @@ def registrationCardId(soup, card):
 
 
 def registrationPack(tr, card_id):
-    pack_name = tr.find_all("td")[2].find("b").text
-    pack = checkPack(pack_name)
+    td_list = tr.find_all("td")
+    release_date = td_list[0].text
+    pack_id = card_id.card_id[:card_id.card_id.index("-")]
+    pack_name = td_list[2].find("b").text
+    if Pack.objects.filter(pack_name=pack_name).exists():
+        pack = Pack.objects.get(pack_name=pack_name)
+    else:
+        pack = Pack(
+            pack_name=pack_name,
+            pack_id=pack_id,
+            release_date=release_date,
+            pack_season=PackSeason.objects.all().first(),
+            pack_classification=PackClassification.objects.all().first()
+        )
+        pack.save()
     pack.recording_card.add(card_id)
     pack.save()
-
-
-def checkPack(pack_name):
-    official_pack = PackOfficialName.objects.filter(official_name=pack_name).first()
-    try:
-        pack = official_pack.db_pack
-    except AttributeError:
-        print(pack_name)
-        sys.exit()
-    return pack
 
 
 def checkRarity(rarity_td):

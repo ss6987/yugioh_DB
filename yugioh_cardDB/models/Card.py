@@ -83,7 +83,7 @@ class Card(models.Model):
 
 
 class CardClassification(models.Model):
-    classification = models.CharField('classification', max_length=20, primary_key=True)
+    classification = models.CharField('classification', max_length=40, primary_key=True)
 
     def __str__(self):
         return self.classification

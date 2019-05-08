@@ -4,6 +4,7 @@ from .models import *
 
 class PackAdmin(admin.ModelAdmin):
     readonly_fields = ["recording_card"]
+    list_display = ["pack_name", "pack_id","release_date"]
 
 
 class ShopURLAdmin(admin.ModelAdmin):
@@ -12,6 +13,16 @@ class ShopURLAdmin(admin.ModelAdmin):
 
 class PriceAdmin(admin.ModelAdmin):
     readonly_fields = ["shop_url"]
+
+
+class PackClassificationAdmin(admin.ModelAdmin):
+    ordering = ('-order_rank',)
+    list_display = ["pack_classification", "order_rank"]
+
+
+class PackSeasonAdmin(admin.ModelAdmin):
+    ordering = ('-order_rank',)
+    list_display = ["season_name", "order_rank"]
 
 
 admin.site.register(Card)
@@ -24,8 +35,8 @@ admin.site.register(Type)
 admin.site.register(LinkMarker)
 admin.site.register(CardId)
 admin.site.register(Pack, PackAdmin)
-admin.site.register(PackClassification)
-admin.site.register(PackOfficialName)
+admin.site.register(PackClassification, PackClassificationAdmin)
+admin.site.register(PackSeason, PackSeasonAdmin)
 admin.site.register(SearchPage)
 admin.site.register(ShopURL, ShopURLAdmin)
 admin.site.register(PriceLog, PriceAdmin)
