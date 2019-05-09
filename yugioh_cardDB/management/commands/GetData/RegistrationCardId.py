@@ -1,5 +1,5 @@
-from yugioh_cardDB.models import CardId, Pack, Rarity,PackSeason,PackClassification
-import sys
+from yugioh_cardDB.models import CardId, Pack, Rarity, PackSeason, PackClassification
+import re
 
 file = open("yugioh_cardDB/texts/card_ids/special_id_list.txt", "r", encoding="utf-8")
 texts = file.readlines()
@@ -50,16 +50,27 @@ def registrationPack(tr, card_id):
     if Pack.objects.filter(pack_name=pack_name).exists():
         pack = Pack.objects.get(pack_name=pack_name)
     else:
+        pack_classification = checkPackClassification(pack_name)
         pack = Pack(
             pack_name=pack_name,
             pack_id=pack_id,
             release_date=release_date,
             pack_season=PackSeason.objects.all().first(),
-            pack_classification=PackClassification.objects.all().first()
+            pack_classification=pack_classification
         )
         pack.save()
     pack.recording_card.add(card_id)
     pack.save()
+
+
+def checkPackClassification(pack_name):
+    for pack_classification in PackClassification.objects.all():
+        if not pack_classification.regex:
+            continue
+        match = re.match(pack_classification.regex, pack_name)
+        if match:
+            return pack_classification
+    return PackClassification.objects.get(pack_classification="未設定")
 
 
 def checkRarity(rarity_td):

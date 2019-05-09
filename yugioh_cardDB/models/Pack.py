@@ -18,6 +18,7 @@ class Pack(models.Model):
 
 class PackClassification(models.Model):
     pack_classification = models.CharField('pack_classification', max_length=255, primary_key=True)
+    regex = models.CharField('regex',max_length=255,default="",null=True,blank=True)
     order_rank = models.IntegerField("order_rank", default=0, unique=False)
 
     def __str__(self):

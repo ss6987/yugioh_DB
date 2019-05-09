@@ -4,7 +4,9 @@ from .models import *
 
 class PackAdmin(admin.ModelAdmin):
     readonly_fields = ["recording_card"]
-    list_display = ["pack_name", "pack_id","release_date"]
+    list_display = ["pack_name", "pack_id","release_date","pack_classification","pack_season"]
+    list_filter = ["pack_classification","pack_season"]
+    search_fields = ["pack_name","pack_id"]
 
 
 class ShopURLAdmin(admin.ModelAdmin):
