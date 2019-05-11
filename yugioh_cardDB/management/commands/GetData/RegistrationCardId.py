@@ -47,6 +47,8 @@ def registrationPack(tr, card_id):
     release_date = td_list[0].text
     pack_id = card_id.card_id[:card_id.card_id.index("-")]
     pack_name = td_list[2].find("b").text
+    ban_text = r"ベンダー版|付録カード|同梱カード"
+    pack_name = re.sub(ban_text,"",pack_name).strip()
     if Pack.objects.filter(pack_name=pack_name).exists():
         pack = Pack.objects.get(pack_name=pack_name)
     else:
