@@ -1,0 +1,85 @@
+﻿Vol.1
+Vol.2
+Vol.3
+Vol.4
+Vol.5
+Vol.6
+Vol.7
+Magic Ruler － 魔法の支配者 －
+Pharaoh's Servant － ファラオのしもべ －
+Curse of Anubis － アヌビスの呪い －
+Thousand Eyes Bible － 千眼の魔術書 －
+Spell Of Mask － 仮面の呪縛 －
+Labyrinth of Nightmare － 悪夢の迷宮 －
+Struggle of Chaos － 闇を制する者 －
+Mythological Age － 蘇りし魂 －
+Pharaonic Guardian － 王家の守護者 －
+新たなる支配者
+ユニオンの降臨
+黒魔導の覇者
+ガーディアンの力
+闇魔界の脅威
+混沌を制す者
+暗黒の侵略者
+天空の聖域
+ファラオの遺産
+ライズ・オブ・デスティニー [ RISE OF DESTINY ]
+フレイミング・エターニティ [ FLAMING ETERNITY ]
+ザ・ロスト・ミレニアム [ THE LOST MILLENNIUM ]
+サイバネティック・レボリューション [ CYBERNETIC REVOLUTION ]
+エレメンタル・エナジー [ ELEMENTAL ENERGY ]
+シャドウ・オブ・インフィニティ [ SHADOW OF INFINITY ]
+エネミー・オブ・ジャスティス [ ENEMY OF JUSTICE ]
+パワー・オブ・ザ・デュエリスト [ POWER OF THE DUELIST ]
+サイバーダーク・インパクト [ CYBERDARK IMPACT ]
+ストライク・オブ・ネオス [ STRIKE OF NEOS ]
+フォース・オブ・ザ・ブレイカー [ FORCE OF THE BREAKER ]
+タクティカル・エボリューション [ TACTICAL EVOLUTION ]
+グラディエイターズ・アサルト [ GLADIATOR'S ASSAULT ]
+ファントム・ダークネス [ PHANTOM DARKNESS ]
+ライト・オブ・デストラクション [ LIGHT OF DESTRUCTION ]
+ザ・デュエリスト・ジェネシス [ THE DUELIST GENESIS ]
+クロスローズ・オブ・カオス [ CROSSROADS OF CHAOS ]
+クリムゾン・クライシス [ CRIMSON CRISIS ]
+レイジング・バトル [ RAGING BATTLE ]
+エンシェント・プロフェシー [ ANCIENT PROPHECY ]
+スターダスト・オーバードライブ [ STARDUST OVERDRIVE ]
+アブソリュート・パワーフォース [ ABSOLUTE POWERFORCE ]
+ザ・シャイニング・ダークネス [ THE SHINING DARKNESS ]
+デュエリスト・レボリューション [ DUELIST REVOLUTION ]
+スターストライク・ブラスト [ STARSTRIKE BLAST ]
+ストーム・オブ・ラグナロク [ STORM OF RAGNAROK ]
+エクストリーム・ビクトリー [ EXTREME VICTORY ]
+ジェネレーション・フォース [ GENERATION FORCE ]
+フォトン・ショックウェーブ [ PHOTON SHOCKWAVE ]
+オーダー・オブ・カオス [ ORDER OF CHAOS ]
+ギャラクティック・オーバーロード [ GALACTIC OVERLORD ]
+リターン・オブ・ザ・デュエリスト [ RETURN OF THE DUELIST ]
+アビス・ライジング [ ABYSS RISING ]
+コスモ・ブレイザー [ COSMO BLAZER ]
+ロード･オブ・ザ・タキオンギャラクシー [ LORD OF THE TACHYON GALAXY ]
+ジャッジメント・オブ・ザ・ライト [ JUDGMENT OF THE LIGHT ]
+シャドウ・スペクターズ [ SHADOW SPECTERS ]
+レガシー・オブ・ザ・ヴァリアント [ LEGACY OF THE VALIANT ]
+プライマル・オリジン [ PRIMAL ORIGIN ]
+ザ・デュエリスト・アドベント [ THE DUELIST ADVENT ]
+ネクスト・チャレンジャーズ [ NEXT CHALLENGERS ]
+ザ・シークレット・オブ・エボリューション [ THE SECRET OF EVOLUTION ]
+クロスオーバー・ソウルズ [ CROSSOVER SOULS ]
+クラッシュ・オブ・リベリオン [ CLASH OF REBELLIONS ]
+ディメンション・オブ・カオス [ DIMENSION OF CHAOS ]
+ブレイカーズ・オブ・シャドウ [ BREAKERS OF SHADOW ]
+シャイニング・ビクトリーズ [ SHINING VICTORIES ]
+ザ・ダーク・イリュージョン [ THE DARK ILLUSION ]
+インベイジョン・オブ・ヴェノム [ INVASION OF VENOM ]
+レイジング・テンペスト [ RAGING TEMPEST ]
+マキシマム・クライシス [ MAXIMUM CRISIS ]
+コード・オブ・ザ・デュエリスト [ CODE OF THE DUELIST ]
+サーキット・ブレイク [ CIRCUIT BREAK ]
+エクストリーム・フォース [ EXTREME FORCE ]
+フレイムズ・オブ・デストラクション [ FLAMES OF DESTRUCTION ]
+サイバネティック・ホライゾン [ CYBERNETIC HORIZON ]
+ソウル・フュージョン [ SOUL FUSION ]
+サベージ・ストライク [ SAVAGE STRIKE ]
+ダーク・ネオストーム [ DARK NEOSTORM ]
+ライジング・ランペイジ [ RISING RAMPAGE ]

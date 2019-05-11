@@ -19,7 +19,7 @@ class PriceAdmin(admin.ModelAdmin):
 
 class PackClassificationAdmin(admin.ModelAdmin):
     ordering = ('-order_rank',)
-    list_display = ["pack_classification", "order_rank"]
+    list_display = ["pack_classification", "order_rank","regex"]
 
 
 class PackSeasonAdmin(admin.ModelAdmin):

@@ -48,11 +48,14 @@ def registrationPack(tr, card_id):
     pack_id = card_id.card_id[:card_id.card_id.index("-")]
     pack_name = td_list[2].find("b").text
     ban_text = r"ベンダー版|付録カード|同梱カード"
-    pack_name = re.sub(ban_text,"",pack_name).strip()
+    pack_name = re.sub(ban_text, "", pack_name).strip()
     if Pack.objects.filter(pack_name=pack_name).exists():
         pack = Pack.objects.get(pack_name=pack_name)
     else:
         pack_classification = checkPackClassification(pack_name)
+        if pack_classification.pack_classification == "未設定":
+            pack_classification = checkRegularPack(pack_name)
+
         pack = Pack(
             pack_name=pack_name,
             pack_id=pack_id,
@@ -72,6 +75,15 @@ def checkPackClassification(pack_name):
         match = re.match(pack_classification.regex, pack_name)
         if match:
             return pack_classification
+    return PackClassification.objects.get(pack_classification="未設定")
+
+
+def checkRegularPack(pack_name):
+    file = open("yugioh_cardDB/management/commands/GetData/regular_pack_list.txt",encoding="utf-8")
+    text = file.read()
+    file.close()
+    if pack_name + "\n" in text:
+        return PackClassification.objects.get(pack_classification="レギュラーパック")
     return PackClassification.objects.get(pack_classification="未設定")
 
 
