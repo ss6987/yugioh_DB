@@ -47,10 +47,12 @@ def registrationPack(tr, card_id):
     release_date = td_list[0].text
     pack_id = card_id.card_id[:card_id.card_id.index("-")]
     pack_name = td_list[2].find("b").text
-    ban_text = r"ベンダー版|付録カード|同梱カード"
+    ban_text = r"付録カード|同梱カード|2パックセット 特典カード"
     pack_name = re.sub(ban_text, "", pack_name).strip()
     if Pack.objects.filter(pack_name=pack_name).exists():
         pack = Pack.objects.get(pack_name=pack_name)
+    elif "ベンダー版" in pack_name:
+        pack = Pack.objects.filter(pack_id=pack_id).first()
     else:
         pack_classification = checkPackClassification(pack_name)
         if pack_classification.pack_classification == "未設定":
@@ -79,7 +81,7 @@ def checkPackClassification(pack_name):
 
 
 def checkRegularPack(pack_name):
-    file = open("yugioh_cardDB/management/commands/GetData/regular_pack_list.txt",encoding="utf-8")
+    file = open("yugioh_cardDB/management/commands/GetData/regular_pack_list.txt", encoding="utf-8")
     text = file.read()
     file.close()
     if pack_name + "\n" in text:
