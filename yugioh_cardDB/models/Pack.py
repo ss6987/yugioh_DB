@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 
 
 class Pack(models.Model):
@@ -30,6 +31,7 @@ class PackClassification(models.Model):
 
 class PackSeason(models.Model):
     season_name = models.CharField('season_name', max_length=255, unique=True, default='tmp')
+    start_date = models.DateField("start_date",default=now())
     order_rank = models.IntegerField("order_rank", default=99, unique=True)
 
     def __str__(self):

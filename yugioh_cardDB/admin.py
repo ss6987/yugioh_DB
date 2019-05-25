@@ -4,9 +4,9 @@ from .models import *
 
 class PackAdmin(admin.ModelAdmin):
     readonly_fields = ["recording_card"]
-    list_display = ["pack_name", "pack_id","release_date","pack_classification","pack_season"]
-    list_filter = ["pack_classification","pack_season"]
-    search_fields = ["pack_name","pack_id"]
+    list_display = ["pack_name", "pack_id", "release_date", "pack_classification", "pack_season"]
+    list_filter = ["pack_classification", "pack_season"]
+    search_fields = ["pack_name", "pack_id"]
 
 
 class ShopURLAdmin(admin.ModelAdmin):
@@ -19,12 +19,12 @@ class PriceAdmin(admin.ModelAdmin):
 
 class PackClassificationAdmin(admin.ModelAdmin):
     ordering = ('-order_rank',)
-    list_display = ["pack_classification", "order_rank","regex"]
+    list_display = ["pack_classification", "order_rank", "regex"]
 
 
 class PackSeasonAdmin(admin.ModelAdmin):
     ordering = ('-order_rank',)
-    list_display = ["season_name", "order_rank"]
+    list_display = ["season_name", "start_date", "order_rank"]
 
 
 admin.site.register(Card)

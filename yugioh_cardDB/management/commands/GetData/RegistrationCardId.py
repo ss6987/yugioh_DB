@@ -57,12 +57,12 @@ def registrationPack(tr, card_id):
         pack_classification = checkPackClassification(pack_name)
         if pack_classification.pack_classification == "未設定":
             pack_classification = checkRegularPack(pack_name)
-
+        pack_season = checkPackSeason(release_date)
         pack = Pack(
             pack_name=pack_name,
             pack_id=pack_id,
             release_date=release_date,
-            pack_season=PackSeason.objects.all().first(),
+            pack_season=pack_season,
             pack_classification=pack_classification
         )
         pack.save()
@@ -78,6 +78,10 @@ def checkPackClassification(pack_name):
         if match:
             return pack_classification
     return PackClassification.objects.get(pack_classification="未設定")
+
+
+def checkPackSeason(release_date):
+    return PackSeason.objects.filter(start_date__gt=release_date).order_by("start_date").first()
 
 
 def checkRegularPack(pack_name):
