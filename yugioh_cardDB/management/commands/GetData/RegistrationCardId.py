@@ -81,7 +81,7 @@ def checkPackClassification(pack_name):
 
 
 def checkPackSeason(release_date):
-    return PackSeason.objects.filter(start_date__gt=release_date).order_by("start_date").first()
+    return PackSeason.objects.filter(start_date__lte=release_date).order_by("-start_date").first()
 
 
 def checkRegularPack(pack_name):
