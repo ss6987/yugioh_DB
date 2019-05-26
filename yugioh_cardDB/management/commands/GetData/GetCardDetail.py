@@ -14,4 +14,7 @@ def getCardDetail(url, driver):
         except WebDriverException as e:
             count += 1
             sleep(10)
+    if flag:
+        print("chromedriver_error")
+        exit()
     return soup
