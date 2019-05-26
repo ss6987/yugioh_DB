@@ -1,5 +1,6 @@
 from selenium.common.exceptions import WebDriverException
 from bs4 import BeautifulSoup
+from time import sleep
 
 
 def getCardDetail(url, driver):
@@ -8,8 +9,9 @@ def getCardDetail(url, driver):
     while flag and count <= 10:
         try:
             driver.get("https://www.db.yugioh-card.com" + url + "&request_locale=ja")
+            soup = BeautifulSoup(driver.page_source, "html.parser")
             flag = False
         except WebDriverException as e:
             count += 1
-    soup = BeautifulSoup(driver.page_source, "html.parser")
+            sleep(10)
     return soup
