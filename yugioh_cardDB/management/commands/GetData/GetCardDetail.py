@@ -1,6 +1,8 @@
 from selenium.common.exceptions import WebDriverException
+from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
+from .GetCardHTML import options
 
 
 def getCardDetail(url, driver):
@@ -14,6 +16,7 @@ def getCardDetail(url, driver):
         except WebDriverException as e:
             count += 1
             sleep(10)
+            driver = webdriver.Chrome(options=options)
     if flag:
         print("chromedriver_error")
         exit()
