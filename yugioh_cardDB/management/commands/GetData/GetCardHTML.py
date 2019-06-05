@@ -51,7 +51,8 @@ def getCardHTML():
         flag = getCardDetailURL(soup, bar, driver)
         if not flag and count <= 10:
             driver = webdriver.Chrome(options=options)
-            count += 0
+            count += 1
+            bar = tqdm(total=max_page, position=0, initial=page * 100)
             continue
         elif count >= 10:
             print("chromedriver_error")
