@@ -53,6 +53,7 @@ def getCardHTML():
             driver = webdriver.Chrome(options=options)
             count += 1
             bar = tqdm(total=max_page, position=0, initial=page * 100)
+            print("driver再起動")
             continue
         elif count >= 10:
             print("chromedriver_error")
