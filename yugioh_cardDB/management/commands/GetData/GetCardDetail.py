@@ -15,6 +15,5 @@ def getCardDetail(url, driver):
             count += 1
             sleep(10)
     if flag:
-        print("chromedriver_error")
         return False
     return soup
